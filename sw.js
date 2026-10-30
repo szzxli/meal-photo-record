@@ -1,5 +1,5 @@
 /* Deploy PWA service worker: cache app shell only, no external requests. */
-const CACHE = 'meal-pwa-v3';
+const CACHE = 'meal-pwa-v4';
 const FILES = ['.', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));

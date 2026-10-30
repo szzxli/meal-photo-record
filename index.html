@@ -1,49 +1,54 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#2f6f4e">
-<title>家庭餐食拍照记录</title>
+<meta name="theme-color" content="#234735">
+<title>家庭餐食拍照记录｜餐桌日记</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
-*{box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;margin:0;line-height:1.6;color:#222;background:#fff}
-header{padding:16px;border-bottom:1px solid #ddd}h1{font-size:22px;margin:0 0 8px}
-main{max-width:900px;margin:0 auto;padding:16px 16px 110px}
-nav.bottom{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid #2f6f4e;box-shadow:0 -2px 8px rgba(0,0,0,.15);display:flex;z-index:10}
-nav.bottom button{flex:1;min-height:60px;font-size:16px;background:#fff;color:#222;border:0;padding-bottom:env(safe-area-inset-bottom)}
-nav.bottom button.active{background:#2f6f4e;color:#fff;font-weight:700}
-@media(min-width:800px){.layout{display:flex;gap:24px}nav.bottom{position:static;flex-direction:column;width:200px;border:1px solid #ddd;height:fit-content}nav.bottom button{text-align:left;padding:12px}main{padding-bottom:24px}}
-.box{border:1px solid #ccc;border-radius:8px;padding:16px;margin:16px 0}
-label{display:block;margin:10px 0}select,input,button{font-size:16px;padding:8px;min-height:44px}
-button{border-radius:8px;border:1px solid #2f6f4e;background:#2f6f4e;color:#fff}
-button.secondary{background:#fff;color:#2f6f4e}
-.out{font-size:18px}.warn{color:#7a3b00}small{color:#555}.page{display:none}.page.active{display:block}
-img.preview{max-width:100%;display:none;margin:10px 0}
-.photo-hero{border:3px solid #2f6f4e;border-radius:12px;padding:20px;margin:16px 0;background:#e6f0e9;text-align:center}
-.photo-hero h2{font-size:24px;margin:0 0 12px}
-label.photo-btn{display:block;width:100%;min-height:64px;line-height:64px;font-size:20px;font-weight:700;background:#2f6f4e;color:#fff;border-radius:12px;cursor:pointer}
-input#photo{position:absolute;opacity:0;width:1px;height:1px}
+:root{color-scheme:light;--ink:#27382f;--muted:#6b746b;--forest:#234735;--forest-2:#315c43;--sage:#e5ede3;--cream:#f6f2e9;--paper:#fffdf8;--line:#e5dfd2;--tomato:#bb6347;--gold:#d6a66f;--shadow:0 14px 36px rgba(52,54,39,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;line-height:1.65;color:var(--ink);background:radial-gradient(ellipse at 12% 0%,#f5eadb 0,transparent 38rem),#f7f5ef}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,label.photo-btn:focus-within{outline:3px solid #d8a56b;outline-offset:3px}header.site-header{position:relative;overflow:hidden;padding:clamp(25px,5vw,56px) max(22px,calc((100vw - 1120px)/2));background:linear-gradient(115deg,#203f30 0%,#315b43 66%,#49664a 100%);color:#fffdf6;border-bottom:5px solid #c77b55}header.site-header:after{content:"";position:absolute;width:460px;height:460px;border-radius:50%;right:-130px;top:-260px;border:1px solid rgba(255,255,255,.11);box-shadow:0 0 0 32px rgba(255,255,255,.025),0 0 0 72px rgba(255,255,255,.025);pointer-events:none}.hero-shell{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(180px,.65fr);gap:28px;align-items:center;max-width:1120px;margin:auto}.hero-copy{max-width:690px}.brand-line{display:flex;align-items:center;gap:10px;margin:0 0 18px;color:#dce8d7;font-size:13px;font-weight:700;letter-spacing:.11em}.brand-stamp{display:grid;place-items:center;width:33px;height:33px;border:1px solid rgba(255,255,255,.5);border-radius:50%;font-size:12px;letter-spacing:0}.hero-copy h1{font-family:Georgia,"Songti SC","Noto Serif CJK SC",serif;font-size:clamp(31px,5vw,52px);font-weight:650;line-height:1.2;letter-spacing:.02em;margin:0 0 14px}.hero-lede{max-width:610px;margin:0;color:#e5ecdf;font-size:clamp(15px,2vw,18px)}.hero-kicker{display:inline-flex;align-items:center;gap:8px;margin-top:22px;padding:8px 13px;border:1px solid rgba(236,231,210,.32);border-radius:99px;color:#f2dfc5;font-size:13px}.hero-art{width:min(100%,250px);justify-self:center;filter:drop-shadow(0 18px 20px rgba(0,0,0,.14))}.trust-row{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:9px;margin:30px auto 0;max-width:1120px}.trust-pill{padding:7px 11px;border-radius:99px;background:rgba(255,255,255,.11);color:#f4f1e7;font-size:12px;letter-spacing:.02em}.usage-details{position:relative;z-index:1;max-width:1120px;margin:16px auto 0;color:#e4eadf;font-size:13px}.usage-details summary{display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:#f1d7bb}.usage-details p{max-width:850px;margin:10px 0 0;padding:13px 15px;border-left:2px solid #d69470;background:rgba(255,255,255,.08);border-radius:0 10px 10px 0}.layout{max-width:1160px;margin:34px auto 0;padding:0 22px;display:grid;grid-template-columns:210px minmax(0,1fr);gap:30px;align-items:start}main{width:100%;max-width:850px;min-width:0;margin:0;padding:0 0 70px}.page{display:none}.page.active{display:block}.page>h2{font-family:Georgia,"Songti SC","Noto Serif CJK SC",serif;font-size:29px;line-height:1.25;margin:0 0 8px;color:#294534}.page-intro{margin:0 0 22px;color:var(--muted);font-size:14px}nav.bottom{position:sticky;top:22px;display:flex;flex-direction:column;gap:7px;padding:10px;border:1px solid var(--line);border-radius:20px;background:rgba(255,253,248,.86);box-shadow:var(--shadow);backdrop-filter:blur(12px);z-index:5}nav.bottom button{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;padding:9px 13px;border:0;border-radius:13px;background:transparent;color:#47554a;text-align:left;font-size:14px;font-weight:650;transition:background .18s,color .18s,transform .18s}nav.bottom button:hover{background:#f1eee5}nav.bottom button.active{background:var(--forest);color:#fffdf5;box-shadow:0 7px 16px rgba(35,71,53,.18)}.nav-icon{display:grid;place-items:center;width:29px;height:29px;border:1px solid currentColor;border-radius:50%;font-size:10px;opacity:.75;flex:none}.box{margin:18px 0;padding:clamp(20px,3vw,30px);border:1px solid rgba(225,218,204,.92);border-radius:22px;background:var(--paper);box-shadow:var(--shadow)}.box>h2{font-family:Georgia,"Songti SC","Noto Serif CJK SC",serif;font-size:25px;line-height:1.3;margin:0 0 5px;color:#294534}.eyebrow{display:block;margin:0 0 8px;color:var(--tomato);font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.box-intro{margin:0 0 20px;color:var(--muted);font-size:14px}label{display:block;margin:16px 0 7px;color:#35473a;font-size:14px;font-weight:700}select,input:not([type=file]){width:100%;min-height:48px;padding:11px 13px;border:1px solid #dcd6c9;border-radius:12px;background:#fffefa;color:#27382f}input::placeholder{color:#96968b}select{appearance:auto}small{display:block;margin-top:7px;color:#74796f;font-size:12px;line-height:1.6}.warn{color:#6f4a2d}.photo-hero{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:10px;align-items:center;overflow:hidden;margin:0 0 20px;padding:clamp(22px,4vw,35px);border:1px solid #e9d8bd;border-radius:24px;background:linear-gradient(122deg,#f4e6d2 0%,#f8f1e5 64%,#efe8d9 100%);text-align:left;box-shadow:0 14px 34px rgba(104,76,44,.08)}.photo-hero:after{position:absolute;right:-52px;bottom:-88px;width:240px;height:240px;border:1px solid rgba(167,133,91,.2);border-radius:50%;box-shadow:0 0 0 18px rgba(255,255,255,.18),0 0 0 42px rgba(255,255,255,.16);content:"";pointer-events:none}.photo-hero-copy{position:relative;z-index:1}.photo-hero h2{max-width:510px;margin:0 0 8px;color:#304837;font-family:Georgia,"Songti SC","Noto Serif CJK SC",serif;font-size:clamp(23px,3vw,32px);line-height:1.3}.photo-hero p{max-width:510px;margin:0 0 14px;color:#667064;font-size:14px}.photo-hero label.photo-btn{display:inline-flex;align-items:center;justify-content:center;width:auto;min-height:48px;margin:7px 0 0;padding:0 19px;border:0;border-radius:99px;background:var(--forest);color:#fffdf6;font-size:14px;font-weight:750;line-height:1;cursor:pointer;box-shadow:0 7px 16px rgba(35,71,53,.18);transition:transform .18s,background .18s}.photo-hero label.photo-btn:hover{transform:translateY(-1px);background:#315b43}.photo-hero input#photo{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;opacity:0}.plate-illustration{position:relative;z-index:1;display:grid;place-items:center;min-height:145px}.plate-illustration svg{width:min(100%,178px);height:auto}.photo-hero .privacy-caption{grid-column:1/-1;position:relative;z-index:1;max-width:100%;margin:4px 0 0;padding-top:12px;border-top:1px solid rgba(128,105,72,.16);color:#747568;font-size:12px}.photo-hero img.preview{position:relative;z-index:2;grid-column:1/-1;max-width:min(100%,460px);max-height:340px;object-fit:contain;margin:14px auto 0;border:6px solid rgba(255,255,255,.75);border-radius:16px;box-shadow:0 10px 26px rgba(46,47,34,.16)}.scene-block{margin:22px 0;padding:15px 16px;border:1px dashed #d8ccba;border-radius:15px;background:#faf7f0}.scene-title{margin:0 0 3px;color:#465b49;font-size:13px;font-weight:750}.scene-subtitle{margin:0 0 11px;color:#858276;font-size:12px}.scene-chips{display:flex;flex-wrap:wrap;gap:8px}.scene-chip{min-height:37px;padding:6px 12px;border:1px solid #d7d0c2;border-radius:99px;background:#fffdf8;color:#53614f;font-size:12px;font-weight:650;transition:all .16s}.scene-chip:hover{border-color:#7e9c7c;background:#f3f6ef}.scene-chip.selected{border-color:var(--forest);background:#e7eee3;color:#234735;box-shadow:inset 0 0 0 1px var(--forest)}.box button:not(.scene-chip){min-height:48px;padding:11px 18px;border:1px solid var(--forest);border-radius:12px;background:var(--forest);color:#fffdf6;font-weight:750;box-shadow:0 7px 15px rgba(35,71,53,.13);transition:transform .18s,background .18s}.box button:not(.scene-chip):hover{transform:translateY(-1px);background:#315b43}.box button.secondary{background:transparent;color:var(--forest);box-shadow:none}.box button.secondary:hover{background:#f1f5ef}.out{margin:20px 0 10px;padding:19px 20px;border:1px solid #dbe6d6;border-radius:17px;background:#f0f5ed;color:#294534;font-size:16px;font-weight:700;line-height:1.95}.out small{padding-top:8px;border-top:1px solid rgba(48,80,54,.13);font-weight:450}.box #detail{display:block;padding:5px 1px 0}.box #records{margin-top:22px;padding-top:4px}.box #records h3{font-family:Georgia,"Songti SC","Noto Serif CJK SC",serif;font-size:20px;color:#304837}.box #records p,.box #trend p,.box #visit p{margin:10px 0;padding:13px 15px;border:1px solid #ede8de;border-radius:13px;background:#faf8f2}.box #records img{border-radius:10px}.page img.preview{max-width:100%;display:none}.page>div.box>small{margin-top:12px}.page .box button+small{margin-top:10px}.page p{color:#596257}.page .box>p:first-of-type{margin-top:8px}.page .box input[type=number]{max-width:100%}.page .box [id$="out"]{margin-top:12px;padding:13px 15px;border-radius:13px;background:#f0f5ed;color:#294534}.page .box>small:last-child{color:#74796f}.layout nav button{letter-spacing:.01em}
+@media(max-width:760px){.hero-shell{grid-template-columns:minmax(0,1fr) 112px;gap:8px}.hero-art{width:112px}.hero-copy h1{font-size:clamp(28px,7vw,42px)}.layout{display:flex;flex-direction:column;gap:16px;margin:21px auto 0;padding:0 15px}.layout nav.bottom{position:fixed;top:auto;left:0;right:0;bottom:0;display:flex;flex-direction:row;gap:3px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));border:0;border-top:1px solid #e4dfd4;border-radius:17px 17px 0 0;background:rgba(255,253,248,.96);box-shadow:0 -8px 24px rgba(49,54,42,.12);backdrop-filter:blur(16px)}nav.bottom button{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:52px;padding:4px 3px;border-radius:11px;text-align:center;font-size:10px;white-space:nowrap}.nav-icon{width:20px;height:20px;font-size:8px}.layout main{max-width:none;padding:0 0 calc(93px + env(safe-area-inset-bottom))}.photo-hero{grid-template-columns:minmax(0,1fr) 106px;gap:2px;padding:20px 18px}.plate-illustration{min-height:108px}.plate-illustration svg{width:108px}.photo-hero h2{font-size:23px}.box{border-radius:18px}.page>h2{font-size:26px}.usage-details{margin-top:14px}.trust-row{margin-top:20px}}
+@media(max-width:420px){header.site-header{padding:25px 17px 20px}.hero-shell{grid-template-columns:minmax(0,1fr) 78px;gap:4px}.hero-art{width:78px}.brand-line{font-size:10px;letter-spacing:.07em}.brand-stamp{width:29px;height:29px}.hero-copy h1{font-size:29px}.hero-lede{font-size:13px}.hero-kicker{margin-top:14px;font-size:11px;padding:6px 10px}.trust-row{gap:6px}.trust-pill{font-size:10px;padding:6px 8px}.photo-hero{grid-template-columns:minmax(0,1fr) 72px}.plate-illustration svg{width:76px}.photo-hero h2{font-size:21px}.scene-chips{gap:6px}.scene-chip{padding:6px 9px;font-size:11px}.box button:not(.scene-chip){width:100%;margin-top:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 </style></head><body>
-<header><h1>家庭餐食拍照记录</h1>
-<p>只做记录和通用营养信息估算。输出只是范围，不是精确测量、不是称重、不是化验、不是诊断，不给个人目标，不做个人风险推断。个人目标与食谱判断只由医生或注册营养师定。</p>
-<p><strong>本 GitHub Pages 版本只保存在这台设备、这个浏览器里，不上传、不保存到服务端，每位访客互不干扰。换设备或清浏览器数据后记录不在。</strong>本页不向任何外部地址发请求，没有统计，没有个人健康字段。</p>
-<p class="warn"><b>注意：</b>本工具不从照片识别菜品和份量。你自己选菜、选份数。照片只作你自己回看的记录。碗体积只算体积，不换算成营养。</p><p>新增“通用记一碗”：7 道有名菜之外的菜可以按主食材组、做法、油量档、盐酱档、一碗克数带记，菜名只作标签，不参与计算，结果是通用组区间，范围更宽，未按具体菜验证。</p></header>
+<header class="site-header">
+<div class="hero-shell">
+  <div class="hero-copy">
+    <p class="brand-line"><span class="brand-stamp">餐桌</span> 家庭餐食拍照记录 · 一份温柔的餐桌日记</p>
+    <h1>把这一餐，<br>好好记下来。</h1>
+    <p class="hero-lede">家常晚饭、周末家宴、朋友来访——用一张照片和一份亲手填写的记录，留住一起吃饭的日常。</p>
+    <span class="hero-kicker">自己的设备，自己的餐桌记忆</span>
+  </div>
+  <svg class="hero-art" viewBox="0 0 220 220" role="img" aria-label="餐盘与餐桌的温暖插画">
+    <circle cx="110" cy="110" r="99" fill="#f3e7d2" opacity=".98"/><circle cx="110" cy="110" r="77" fill="#e8d9bf"/><circle cx="110" cy="110" r="69" fill="#fffaf0"/><circle cx="110" cy="110" r="57" fill="none" stroke="#c6a679" stroke-width="1.4"/>
+    <path d="M77 117c13-27 50-35 70-14-6 25-25 42-52 35-12-3-19-10-18-21Z" fill="#6e8c62"/><path d="M87 119c15-5 29-14 40-28M102 137c2-14 10-27 22-38" fill="none" stroke="#f3ead5" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="84" cy="92" r="8" fill="#bd6346"/><circle cx="146" cy="92" r="7" fill="#d4a65d"/><circle cx="145" cy="133" r="6" fill="#bd6346"/><path d="M66 72c8-10 20-13 29-10M145 69c8 1 14 5 18 11" fill="none" stroke="#718d63" stroke-width="4" stroke-linecap="round"/>
+    <path d="M33 171h154" stroke="#dbccb2" stroke-width="2" stroke-linecap="round"/><path d="M48 181h124" stroke="#dbccb2" stroke-width="1" stroke-linecap="round" opacity=".7"/>
+  </svg>
+</div>
+<div class="trust-row" aria-label="记录边界"><span class="trust-pill">只保存在本机浏览器</span><span class="trust-pill">照片不上传、不识别</span><span class="trust-pill">每位访客各自记录</span><span class="trust-pill">估算给范围，不作诊断</span></div>
+<details class="usage-details"><summary>使用说明与边界</summary><p>只做记录和通用营养信息估算。输出只是范围，不是精确测量、不是称重、不是化验、不是诊断，不给个人目标，不做个人风险推断；个人目标与食谱判断只由医生或注册营养师定。照片仅供自己回看，菜品和份量由你自己选择。本 GitHub Pages 版本不向任何外部地址发请求、没有统计、没有个人健康字段；换设备或清理浏览器数据后记录不会保留。碗体积只算体积，不换算成营养。通用记一碗是宽范围假设，未按具体菜验证。</p></details>
+</header>
 <div class="layout">
 <nav class="bottom" aria-label="导航">
-<button onclick="showPage('record',this)" class="active">记一餐</button>
-<button onclick="showPage('trend',this)">趋势</button>
-<button onclick="showPage('visit',this)">复诊前一页</button>
-<button onclick="showPage('bowls',this)">我的碗</button>
+<button onclick="showPage('record',this)" class="active"><span class="nav-icon" aria-hidden="true">01</span><span>记一餐</span></button>
+<button onclick="showPage('trend',this)"><span class="nav-icon" aria-hidden="true">02</span><span>趋势</span></button>
+<button onclick="showPage('visit',this)"><span class="nav-icon" aria-hidden="true">03</span><span>复诊前一页</span></button>
+<button onclick="showPage('bowls',this)"><span class="nav-icon" aria-hidden="true">04</span><span>我的碗</span></button>
 </nav>
 <main>
 <section id="page-record" class="page active">
-<div class="photo-hero"><h2>拍一碗照片</h2>
-<label class="photo-btn" for="photo">拍一碗照片</label>
+<div class="photo-hero">
+<div class="photo-hero-copy"><span class="eyebrow">先留个影，再慢慢记录</span><h2>热气腾腾的一桌，<br>值得留下一张。</h2>
+<p>家常一餐、周末家宴，或朋友来访。拍下你想回看的这一碗。</p>
+<label class="photo-btn" for="photo">拍下这一餐</label></div>
+<div class="plate-illustration" aria-hidden="true"><svg viewBox="0 0 180 180"><circle cx="90" cy="90" r="78" fill="#d8c5a5"/><circle cx="90" cy="90" r="68" fill="#fffaf1"/><circle cx="90" cy="90" r="55" fill="none" stroke="#d3bb94" stroke-width="2"/><path d="M52 97c10-22 34-31 58-17 14 8 17 20 9 35-11 17-44 22-62 8-8-7-10-16-5-26Z" fill="#728d62"/><path d="M64 100c17-3 31-13 42-28M80 123c5-14 13-27 27-37" fill="none" stroke="#f3ead8" stroke-width="3" stroke-linecap="round"/><circle cx="63" cy="72" r="7" fill="#bf6646"/><circle cx="120" cy="68" r="7" fill="#d4a65d"/><circle cx="126" cy="119" r="6" fill="#bf6646"/><path d="M29 156h122" stroke="#c4ad88" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg></div>
 <input type="file" id="photo" accept="image/*" capture="environment">
-<img id="preview" class="preview" alt="">
-<p style="margin:8px 0 0"><small>先拍照，再往下选菜算范围。照片只作记录，不识别菜品，不上传。</small></p></div>
-<div class="box"><h2>记一餐</h2>
+<img id="preview" class="preview" alt="你刚刚拍摄的餐食照片">
+<p class="privacy-caption">照片只作自己回看的记录，不识别菜品、不上传。可以先拍，也可以直接往下填写。</p></div>
+<div class="box"><span class="eyebrow">一份记录 · 从这一碗开始</span><h2>今天这桌，吃了些什么？</h2><p class="box-intro">照片由你自己拍，菜名和份量由你自己选；结果只给宽范围，记录留在这台设备里。</p>
 <label>线 <select id="line" onchange="lineChange()"><option value="cn">中餐</option><option value="west">西餐</option><option value="generic">通用记一碗</option></select></label>
 <label id="dishLabel">菜品 <select id="dish"></select></label>
 <div id="cnFields">
@@ -67,18 +72,24 @@ input#photo{position:absolute;opacity:0;width:1px;height:1px}
 <label>一碗份量（估算克数带，不是称重） <select id="genBowl"><option value="small">小碗 150–250 克</option><option value="medium" selected>中碗 200–350 克</option><option value="large">大碗 300–500 克</option></select></label>
 <small>通用组基底是每 100 克的通用假设区间，不是这道具体菜的实测值；做法不另算油盐，避免重复计算。酱油按未知品牌簇 36.0–56.4 毫克/毫升算，盐按 393 毫克/克算。</small>
 </div>
-<label>备注（可选） <input id="note" type="text" placeholder="例如：家人共煮"></label>
-<button onclick="calc()">算范围</button>
-<button onclick="saveRecord()">记这一碗</button>
+<label>备注（可选） <input id="note" type="text" placeholder="例如：周日和家人一起做的番茄炒蛋"></label>
+<div class="scene-block"><p class="scene-title">给这顿饭加个小标签</p><p class="scene-subtitle">只会写进本机备注，想记时再选。</p><div class="scene-chips" role="group" aria-label="餐桌场景快捷备注">
+<button type="button" class="scene-chip" aria-pressed="false" onclick="selectScene(this,'家常晚餐')">家常晚餐</button>
+<button type="button" class="scene-chip" aria-pressed="false" onclick="selectScene(this,'周末家宴')">周末家宴</button>
+<button type="button" class="scene-chip" aria-pressed="false" onclick="selectScene(this,'朋友来访')">朋友来访</button>
+<button type="button" class="scene-chip" aria-pressed="false" onclick="selectScene(this,'节日团圆')">节日团圆</button>
+</div></div>
+<button onclick="calc()">查看估算范围</button>
+<button onclick="saveRecord()">保存这碗记录</button>
 <div class="out" id="out"></div><small id="detail"></small>
 <div id="records"></div>
 <button class="secondary" onclick="clearRecords()">清空本地记录</button>
 </div>
 <p><small>照片只存在这台设备浏览器里，不上传。照片太大存不下时，只记范围、不存照片。</small></p>
 </section>
-<section id="page-trend" class="page"><div class="box"><h2>趋势（按天合计范围）</h2><div id="trend"></div><small>合计是范围下限相加到上限相加，不是单数。只有记了记录的日子才出现，缺记的日子不等于没吃。</small></div></section>
-<section id="page-visit" class="page"><div class="box"><h2>复诊前一页（事实汇总，不是建议）</h2><div id="visit"></div><button onclick="downloadSummary()">下载汇总文本</button><small>这页只汇总你记过的事实，供医生自己判断，不给医生建议、不推断风险。</small></div></section>
-<section id="page-bowls" class="page"><div class="box"><h2>碗体积（只算体积，不算营养）</h2>
+<section id="page-trend" class="page"><h2>这段时间的餐桌</h2><p class="page-intro">只汇总有留下记录的日子；空白不代表没有吃饭。</p><div class="box"><h2>趋势（按天合计范围）</h2><div id="trend"></div><small>合计是范围下限相加到上限相加，不是单数。只有记了记录的日子才出现，缺记的日子不等于没吃。</small></div></section>
+<section id="page-visit" class="page"><h2>带着自己的记录去复诊</h2><p class="page-intro">这里只整理你记过的事实，不替你判断，也不给医疗建议。</p><div class="box"><h2>复诊前一页（事实汇总，不是建议）</h2><div id="visit"></div><button onclick="downloadSummary()">下载汇总文本</button><small>这页只汇总你记过的事实，供医生自己判断，不给医生建议、不推断风险。</small></div></section>
+<section id="page-bowls" class="page"><h2>每家的碗，都有熟悉的样子</h2><p class="page-intro">记下常用碗盘的体积范围；这只是体积，不会换算成营养。</p><div class="box"><h2>碗体积（只算体积，不算营养）</h2>
 <p>圆台满容 = π×高/3×(顶半径²+顶半径×底半径+底半径²)。底径未实测时用范围，体积就是范围。</p>
 <label>实测预设 <select id="preset" onchange="presetChange()"><option value="">自己填</option><option value="tiger">虎碗：顶径 11 厘米、高 5.5 厘米</option><option value="leaf">树叶纹大碗：顶径 20 厘米、高 5–6 厘米</option><option value="beaded">白色压边大碗：顶径 21 厘米、高 8 厘米</option><option value="plate">白色浅盘：直径 25 厘米（按盘算，不按碗）</option></select></label>
 <label>顶径（厘米） <input id="D" type="number" step="0.1"></label>
@@ -123,6 +134,18 @@ function generic(group,method,oilLevel,saltLevel,bowl){
   return {grams:g,kcal:[g[0]*b[0][0]/100+o[0]*OIL_KCAL,g[1]*b[0][1]/100+o[1]*OIL_KCAL],fat:[g[0]*b[1][0]/100+o[0],g[1]*b[1][1]/100+o[1]],na:[g[0]*b[2][0]/100+sg[0]*NA+sm[0]*36,g[1]*b[2][1]/100+sg[1]*NA+sm[1]*56.4],note:'通用组区间，未按具体菜验证，范围更宽。主食材组 '+GEN_GROUP[group]+' 每 100 克通用基底 '+b[0][0]+'–'+b[0][1]+' 千卡、脂肪 '+b[1][0]+'–'+b[1][1]+' 克、钠 '+b[2][0]+'–'+b[2][1]+' 毫克；做法 '+GEN_METHOD[method]+' 只作分组，不另加油盐；油 '+o[0]+'–'+o[1]+' 克、盐 '+sg[0]+'–'+sg[1]+' 克、酱油 '+sm[0]+'–'+sm[1]+' 毫升（未知品牌簇 36.0–56.4 毫克/毫升）；一碗 '+g[0]+'–'+g[1]+' 克（估算带，不是称重）。'};
 }
 function fmt(r){return r[0].toFixed(1)+'–'+r[1].toFixed(1);}
+
+function selectScene(btn,scene){
+  const note=document.getElementById('note');
+  const prefix=/^餐桌场景：[\s\S]*?(?:；|$)/;
+  const current=note.value.trim();
+  const wasSelected=btn.classList.contains('selected');
+  document.querySelectorAll('.scene-chip').forEach(b=>{b.classList.remove('selected');b.setAttribute('aria-pressed','false');});
+  if(wasSelected){note.value=current.replace(prefix,'').trim();return;}
+  const rest=current.replace(/^餐桌场景：[\s\S]*?(?:；|$)/,'').trim();
+  note.value='餐桌场景：'+scene+(rest?'；'+rest:'');
+  btn.classList.add('selected');btn.setAttribute('aria-pressed','true');
+}
 function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');if(id==='trend')renderTrend();if(id==='visit')renderVisit();}
 function lineChange(){const line=document.getElementById('line').value;const sel=document.getElementById('dish');if(line!=='generic'){const map=line==='cn'?CN:WEST;sel.innerHTML='';Object.keys(map).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=map[k];sel.appendChild(o);});}document.getElementById('dishLabel').style.display=line==='generic'?'none':'block';document.getElementById('cnFields').style.display=line==='cn'?'block':'none';document.getElementById('westFields').style.display=line==='west'?'block':'none';document.getElementById('genFields').style.display=line==='generic'?'block':'none';calc();}
 let lastResult=null, photoData='';

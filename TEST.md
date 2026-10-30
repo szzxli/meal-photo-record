@@ -147,3 +147,9 @@ Honest limits of this generic section (do not hide):
    and JS and Python agree. The only near-boundary note is inherited from
    the named section, not generic: tomato-egg sodium 14.6 mg from its
    upper bound.
+
+## Redesign 2026-10-30 (user-supplied zip, applied by Noor)
+- Visual only + scene-note chips: new site header "把这一餐，好好记下来。", plate illustrations (inline SVG, no external requests), warm paper/forest palette, desktop sticky sidebar nav, mobile fixed bottom nav with dark text (fixes the white-on-white nav bug), photo hero "热气腾腾的一桌，值得留下一张。" with button "拍下这一餐".
+- Scene chips (家常晚餐/周末家宴/朋友来访/节日团圆) write only into the note field ("餐桌场景：X；..."), toggle off removes the prefix, and do NOT change any calculation.
+- Calculation constants, photo-local-only, trend, pre-visit, bowl-volume logic unchanged; JS node --check PASS, sw.js PASS, manifest parses, 0 external URLs in index.html, boundary text retained (ranges only, no diagnosis, no personal targets).
+- SW cache bumped to meal-pwa-v4 in the supplied files, so old cached shells should be replaced on update; live-browser retest still required before calling this version verified.
