@@ -10,9 +10,9 @@
 *{box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;margin:0;line-height:1.6;color:#222;background:#fff}
 header{padding:16px;border-bottom:1px solid #ddd}h1{font-size:22px;margin:0 0 8px}
 main{max-width:900px;margin:0 auto;padding:16px 16px 110px}
-nav.bottom{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #ddd;display:flex;z-index:10}
-nav.bottom button{flex:1;min-height:60px;font-size:16px;background:#fff;border:0;padding-bottom:env(safe-area-inset-bottom)}
-nav.bottom button.active{background:#e6f0e9;font-weight:700}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid #2f6f4e;box-shadow:0 -2px 8px rgba(0,0,0,.15);display:flex;z-index:10}
+nav.bottom button{flex:1;min-height:60px;font-size:16px;background:#fff;color:#222;border:0;padding-bottom:env(safe-area-inset-bottom)}
+nav.bottom button.active{background:#2f6f4e;color:#fff;font-weight:700}
 @media(min-width:800px){.layout{display:flex;gap:24px}nav.bottom{position:static;flex-direction:column;width:200px;border:1px solid #ddd;height:fit-content}nav.bottom button{text-align:left;padding:12px}main{padding-bottom:24px}}
 .box{border:1px solid #ccc;border-radius:8px;padding:16px;margin:16px 0}
 label{display:block;margin:10px 0}select,input,button{font-size:16px;padding:8px;min-height:44px}
