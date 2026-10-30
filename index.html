@@ -24,7 +24,7 @@ img.preview{max-width:100%;display:none;margin:10px 0}
 <header><h1>家庭餐食拍照记录</h1>
 <p>只做记录和通用营养信息估算。输出只是范围，不是精确测量、不是称重、不是化验、不是诊断，不给个人目标，不做个人风险推断。个人目标与食谱判断只由医生或注册营养师定。</p>
 <p><strong>本 GitHub Pages 版本只保存在这台设备、这个浏览器里，不上传、不保存到服务端，每位访客互不干扰。换设备或清浏览器数据后记录不在。</strong>本页不向任何外部地址发请求，没有统计，没有个人健康字段。</p>
-<p class="warn"><b>注意：</b>本工具不从照片识别菜品和份量。你自己选菜、选份数。照片只作你自己回看的记录。碗体积只算体积，不换算成营养。</p></header>
+<p class="warn"><b>注意：</b>本工具不从照片识别菜品和份量。你自己选菜、选份数。照片只作你自己回看的记录。碗体积只算体积，不换算成营养。</p><p>新增“通用记一碗”：7 道有名菜之外的菜可以按主食材组、做法、油量档、盐酱档、一碗克数带记，菜名只作标签，不参与计算，结果是通用组区间，范围更宽，未按具体菜验证。</p></header>
 <div class="layout">
 <nav class="bottom" aria-label="导航">
 <button onclick="showPage('record',this)" class="active">记一餐</button>
@@ -35,8 +35,8 @@ img.preview{max-width:100%;display:none;margin:10px 0}
 <main>
 <section id="page-record" class="page active">
 <div class="box"><h2>记一餐</h2>
-<label>线 <select id="line" onchange="lineChange()"><option value="cn">中餐</option><option value="west">西餐</option></select></label>
-<label>菜品 <select id="dish"></select></label>
+<label>线 <select id="line" onchange="lineChange()"><option value="cn">中餐</option><option value="west">西餐</option><option value="generic">通用记一碗</option></select></label>
+<label id="dishLabel">菜品 <select id="dish"></select></label>
 <div id="cnFields">
 <label>吃了整锅的几分之几 <select id="share"><option value="0.5">1/2 锅</option><option value="0.3333333333" selected>1/3 锅</option><option value="0.25">1/4 锅</option><option value="0.2">1/5 锅</option></select></label>
 <label>酱油簇（不知道品牌就选“不知道”） <select id="soy"><option value="unknown" selected>不知道品牌（36.0–56.4 毫克/毫升）</option><option value="regular">普通酱油（56.4 毫克/毫升）</option><option value="reduced_salt">减盐酱油（36.0 毫克/毫升）</option><option value="none">没放酱油</option></select></label>
@@ -47,6 +47,16 @@ img.preview{max-width:100%;display:none;margin:10px 0}
 <label>厚度（厘米） <select id="plateT"><option value="1">1</option><option value="1.5" selected>1.5</option><option value="2">2</option><option value="2.5">2.5</option></select></label>
 <label>另外加的盐（克，默认 0） <input id="saltG" type="number" step="0.1" min="0" value="0"></label>
 <small>西餐份量 = 盘面积 × 覆盖率 × 厚度 × 密度带 0.8–1.1 克/毫升，估算克数不是称重。基底从无盐食材值起步，盐按克数另加。</small>
+</div>
+<div id="genFields" style="display:none">
+<p><b>通用记一碗：</b>菜名只作记录标签，不参与计算。计算只用下面选的主食材组、油量带、盐酱带和一碗克数带，结果是通用组区间，未按具体菜验证，范围更宽。</p>
+<label>菜名（随便写，只作标签） <input id="genName" type="text" placeholder="例如：红烧肉、清蒸鱼、凉拌菜"></label>
+<label>主食材组 <select id="genGroup"><option value="egg">蛋</option><option value="tofu">豆腐/豆制品</option><option value="pork">猪肉</option><option value="chicken">鸡肉</option><option value="beef">牛肉</option><option value="fish_shrimp">鱼/虾</option><option value="leafy">叶菜</option><option value="root_stem">根茎菜</option><option value="mushroom">菌菇</option><option value="mixed_veg">混合蔬菜</option></select></label>
+<label>做法（只作记录分组，不另加隐藏油盐；油盐由下面两档决定） <select id="genMethod"><option value="stir_fry">炒</option><option value="braise">红烧/炖</option><option value="steam">蒸</option><option value="cold_mix">凉拌</option><option value="soup">汤</option><option value="pan_fry">煎</option></select></label>
+<label>油量档（宽带，不是单克数） <select id="genOil"><option value="low">少油</option><option value="regular" selected>常规油</option><option value="heavy">多油</option></select></label>
+<label>盐酱档（宽带） <select id="genSalt"><option value="light">淡</option><option value="regular" selected>常规</option><option value="heavy">重</option></select></label>
+<label>一碗份量（估算克数带，不是称重） <select id="genBowl"><option value="small">小碗 150–250 克</option><option value="medium" selected>中碗 200–350 克</option><option value="large">大碗 300–500 克</option></select></label>
+<small>通用组基底是每 100 克的通用假设区间，不是这道具体菜的实测值；做法不另算油盐，避免重复计算。酱油按未知品牌簇 36.0–56.4 毫克/毫升算，盐按 393 毫克/克算。</small>
 </div>
 <label>备注（可选） <input id="note" type="text" placeholder="例如：家人共煮"></label>
 <button onclick="calc()">算范围</button>
@@ -93,9 +103,23 @@ function western(dish,D,cov,thick,saltG){
   const vol=Math.PI*(D/2)*(D/2)*cov*thick; const glo=vol*0.8, ghi=vol*1.1; const b=WEST_BASE[dish]; const sna=saltG*NA;
   return {vol:vol,grams:[glo,ghi],kcal:[glo*b[0][0]/100,ghi*b[0][1]/100],fat:[glo*b[1][0]/100,ghi*b[1][1]/100],na:[glo*b[2][0]/100+sna,ghi*b[2][1]/100+sna],note:'西餐估算：盘体积 '+vol.toFixed(1)+' 毫升，估算克数 '+glo.toFixed(1)+'–'+ghi.toFixed(1)+' 克（密度带 0.8–1.1 克/毫升假设，不是称重），基底无盐，盐 '+saltG+' 克另加。'};
 }
+const GEN_BASE={egg:[[140,170],[9,12],[100,150]],tofu:[[60,90],[3,5],[5,15]],pork:[[200,280],[14,22],[60,90]],chicken:[[155,175],[3,4.5],[60,90]],beef:[[180,250],[8,15],[65,95]],fish_shrimp:[[110,160],[2,6],[80,150]],leafy:[[20,40],[0.2,1],[10,30]],root_stem:[[50,90],[0.2,1],[10,30]],mushroom:[[25,45],[0.3,1],[5,15]],mixed_veg:[[30,60],[0.5,2],[15,40]]};
+const GEN_GROUP={'egg':'蛋','tofu':'豆腐/豆制品','pork':'猪肉','chicken':'鸡肉','beef':'牛肉','fish_shrimp':'鱼/虾','leafy':'叶菜','root_stem':'根茎菜','mushroom':'菌菇','mixed_veg':'混合蔬菜'};
+const GEN_METHOD={'stir_fry':'炒','braise':'红烧/炖','steam':'蒸','cold_mix':'凉拌','soup':'汤','pan_fry':'煎'};
+const GEN_OIL={low:[3,7],regular:[7,14],heavy:[14,25]};
+const GEN_OIL_L={'low':'少油','regular':'常规油','heavy':'多油'};
+const GEN_SALT={light:[0,0.5],regular:[0.5,1.5],heavy:[1.5,3]};
+const GEN_SALT_L={'light':'淡','regular':'常规','heavy':'重'};
+const GEN_SOY_ML={light:[0,5],regular:[5,15],heavy:[15,30]};
+const GEN_BOWL={small:[150,250],medium:[200,350],large:[300,500]};
+const GEN_BOWL_L={'small':'小碗 150–250 克','medium':'中碗 200–350 克','large':'大碗 300–500 克'};
+function generic(group,method,oilLevel,saltLevel,bowl){
+  const b=GEN_BASE[group], g=GEN_BOWL[bowl], o=GEN_OIL[oilLevel], sg=GEN_SALT[saltLevel], sm=GEN_SOY_ML[saltLevel];
+  return {grams:g,kcal:[g[0]*b[0][0]/100+o[0]*OIL_KCAL,g[1]*b[0][1]/100+o[1]*OIL_KCAL],fat:[g[0]*b[1][0]/100+o[0],g[1]*b[1][1]/100+o[1]],na:[g[0]*b[2][0]/100+sg[0]*NA+sm[0]*36,g[1]*b[2][1]/100+sg[1]*NA+sm[1]*56.4],note:'通用组区间，未按具体菜验证，范围更宽。主食材组 '+GEN_GROUP[group]+' 每 100 克通用基底 '+b[0][0]+'–'+b[0][1]+' 千卡、脂肪 '+b[1][0]+'–'+b[1][1]+' 克、钠 '+b[2][0]+'–'+b[2][1]+' 毫克；做法 '+GEN_METHOD[method]+' 只作分组，不另加油盐；油 '+o[0]+'–'+o[1]+' 克、盐 '+sg[0]+'–'+sg[1]+' 克、酱油 '+sm[0]+'–'+sm[1]+' 毫升（未知品牌簇 36.0–56.4 毫克/毫升）；一碗 '+g[0]+'–'+g[1]+' 克（估算带，不是称重）。'};
+}
 function fmt(r){return r[0].toFixed(1)+'–'+r[1].toFixed(1);}
 function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');if(id==='trend')renderTrend();if(id==='visit')renderVisit();}
-function lineChange(){const line=document.getElementById('line').value;const sel=document.getElementById('dish');const map=line==='cn'?CN:WEST;sel.innerHTML='';Object.keys(map).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=map[k];sel.appendChild(o);});document.getElementById('cnFields').style.display=line==='cn'?'block':'none';document.getElementById('westFields').style.display=line==='west'?'block':'none';calc();}
+function lineChange(){const line=document.getElementById('line').value;const sel=document.getElementById('dish');if(line!=='generic'){const map=line==='cn'?CN:WEST;sel.innerHTML='';Object.keys(map).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=map[k];sel.appendChild(o);});}document.getElementById('dishLabel').style.display=line==='generic'?'none':'block';document.getElementById('cnFields').style.display=line==='cn'?'block':'none';document.getElementById('westFields').style.display=line==='west'?'block':'none';document.getElementById('genFields').style.display=line==='generic'?'block':'none';calc();}
 let lastResult=null, photoData='';
 document.getElementById('photo').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{photoData=rd.result;const im=document.getElementById('preview');im.src=photoData;im.style.display='block';};rd.readAsDataURL(f);});
 function loadRecords(){try{return JSON.parse(localStorage.getItem('meal_records_gh')||'[]');}catch(e){return [];}}
@@ -103,6 +127,7 @@ function saveRecords(r){localStorage.setItem('meal_records_gh',JSON.stringify(r)
 function calc(){
   const line=document.getElementById('line').value, dish=document.getElementById('dish').value; let r, note, label;
   if(line==='cn'){const share=parseFloat(document.getElementById('share').value), soy=document.getElementById('soy').value; const w=whole(dish,soy); r={kcal:[w.kcal[0]*share,w.kcal[1]*share],fat:[w.fat[0]*share,w.fat[1]*share],na:[w.na[0]*share,w.na[1]*share]}; note=w.note; label=CN[dish]+'，'+document.getElementById('share').selectedOptions[0].text;}
+  else if(line==='generic'){const group=document.getElementById('genGroup').value, method=document.getElementById('genMethod').value, oilLevel=document.getElementById('genOil').value, saltLevel=document.getElementById('genSalt').value, bowl=document.getElementById('genBowl').value; const w=generic(group,method,oilLevel,saltLevel,bowl); r={kcal:w.kcal,fat:w.fat,na:w.na}; note=w.note; const nm=document.getElementById('genName').value.trim()||'通用记一碗'; label=nm+'（通用组区间，未按具体菜验证，范围更宽；'+GEN_GROUP[group]+'、'+GEN_METHOD[method]+'、'+GEN_OIL_L[oilLevel]+'、盐酱'+GEN_SALT_L[saltLevel]+'、'+GEN_BOWL_L[bowl]+'）';}
   else{const D=parseFloat(document.getElementById('plateD').value), cov=parseFloat(document.getElementById('plateCov').value), thick=parseFloat(document.getElementById('plateT').value), saltG=parseFloat(document.getElementById('saltG').value)||0; const w=western(dish,D,cov,thick,saltG); r={kcal:w.kcal,fat:w.fat,na:w.na}; note=w.note; label=WEST[dish]+'，盘 '+D+' 厘米、覆盖 '+Math.round(cov*100)+'%、厚 '+thick+' 厘米、盐 '+saltG+' 克';}
   lastResult={line:line, dish:label, kcal:r.kcal, fat:r.fat, na:r.na, note:note};
   document.getElementById('out').innerHTML='热量：'+fmt(r.kcal)+' 千卡<br>脂肪：'+fmt(r.fat)+' 克<br>钠：'+fmt(r.na)+' 毫克<br><small>对照通用参考：钠约为 FDA 每日参考 2300 毫克的 '+(r.na[0]/2300*100).toFixed(0)+'–'+(r.na[1]/2300*100).toFixed(0)+'%（通用参考，非个人目标）。</small>';
@@ -112,7 +137,7 @@ function renderRecords(){
   const recs=loadRecords(); const el=document.getElementById('records');
   if(!recs.length){el.innerHTML='<p>暂无记录。</p>';return;}
   let html='<h3>记录（'+recs.length+' 碗/盘）</h3>';
-  recs.slice().reverse().forEach(r=>{html+='<p>'+r.date+' · ['+(r.line==='cn'?'中餐':'西餐')+'] '+r.dish+'<br>热量 '+fmt(r.kcal)+' 千卡，脂肪 '+fmt(r.fat)+' 克，钠 '+fmt(r.na)+' 毫克'+(r.hasPhoto?' · 有照片':'')+(r.noteText?' · '+r.noteText:'')+'</p>'; if(r.photo) html+='<img src="'+r.photo+'" style="max-width:200px;display:block;margin:4px 0" alt="">';});
+  recs.slice().reverse().forEach(r=>{html+='<p>'+r.date+' · ['+(r.line==='generic'?'通用':(r.line==='cn'?'中餐':'西餐'))+'] '+r.dish+'<br>热量 '+fmt(r.kcal)+' 千卡，脂肪 '+fmt(r.fat)+' 克，钠 '+fmt(r.na)+' 毫克'+(r.hasPhoto?' · 有照片':'')+(r.noteText?' · '+r.noteText:'')+'</p>'; if(r.photo) html+='<img src="'+r.photo+'" style="max-width:200px;display:block;margin:4px 0" alt="">';});
   el.innerHTML=html;
 }
 function renderTrend(){

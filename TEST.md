@@ -89,3 +89,61 @@ Bowls, volume only, never nutrition:
    offline reopen, before giving any link to the user.
 7. Photo is record only in this build; there is no dish/portion
    recognition, by design.
+
+## Generic mode — added 2026-10-30 (local deploy/ only, NOT pushed, NOT live)
+New "通用记一碗" line on the Record page, added only; all 7 named dishes,
+their ranges, and PWA files are unchanged (named-dish check still 30/30,
+re-run above). Free-text dish name is a label only and does NOT change the
+calculation. Inputs: main-ingredient group (10 groups), method (6, grouping
+label only — it adds NO hidden oil/salt, to avoid double counting; oil and
+salt/sauce levels carry the cooking difference), oil band, salt/sauce band
+(soy unknown cluster 36.0–56.4 mg/ml, salt 393 mg/g), bowl gram band
+(small 150–250 g, medium 200–350 g, large 300–500 g, estimated, not weighed).
+Formula: per-100g group base interval x bowl grams band + oil band + salt/
+soy band. Output only three ranges; sodium only vs FDA 2300 mg generic
+reference, labelled non-personal, non-medical. Every generic result is
+labelled "通用组区间，未按具体菜验证，范围更宽". Generic records use the
+same localStorage records and flow into Trend and Pre-visit summary like
+named records, with the free-text name shown and a [通用] tag. Photo is
+still record only, no recognition, no upload, no external requests
+(0 http(s) URLs in index.html, re-checked). Checks: node --check on
+extracted index.html JS PASS, sw.js PASS, and JS generic() run in node
+matches the Python numbers below exactly (to rounding).
+
+Generic examples verified (Python test_generic.py + node generic()):
+- Stir-fry pork, regular oil, regular salt, medium bowl 200–350 g:
+  kcal 461.9–1103.8; fat 35.0–91.0 g; sodium 496.5–1750.5 mg
+  (22–76% of FDA 2300 mg generic ref)
+- Steamed fish, low oil, light salt, small bowl 150–250 g:
+  kcal 191.5–461.9; fat 6.0–22.0 g; sodium 120.0–853.5 mg (5–37%)
+- Cold-mixed vegetable (mixed_veg), low oil, light salt, medium bowl:
+  kcal 86.5–271.9; fat 4.0–14.0 g; sodium 30.0–618.5 mg (1–27%)
+- Extra propagation guards, same formula, all lo <= hi:
+  braised pork, heavy oil, heavy salt, large bowl 300–500 g:
+  kcal 723.8–1621.0; fat 56.0–135.0 g; sodium 1309.5–3321.0 mg (57–144%)
+  steamed leafy vegetable, low oil, light salt, small bowl:
+  kcal 56.5–161.9; fat 3.3–9.5 g; sodium 15.0–553.5 mg (1–24%)
+
+Honest limits of this generic section (do not hide):
+1. Group bases are generic assumptions per 100 g, NOT measured values for
+   any specific dish. A passing example does NOT validate the group, and
+   a generic range must never be quoted as that dish's validated range.
+2. Ranges are deliberately very wide (e.g. stir-fry pork kcal width
+   ~642 kcal, braised pork sodium up to 3321 mg): that width is the cost
+   of covering many dishes with one group, not precision.
+3. Method adds no coefficient: a steamed dish with "heavy" oil selected
+   will still get the heavy oil band, because the user, not the method
+   label, supplies the oil level. Contradictory selections are possible
+   and are not corrected by the tool.
+4. Bowl gram bands are user-selected estimates, not weighed and not
+   derived from the bowl-volume page; a wrong band shifts all three
+   ranges proportionally.
+5. No live-browser click test of the generic UI, no real-device test,
+   no recognition test (recognition is still absent by design). Parent
+   must push, open the live URL in a real browser, and click the generic
+   line, save a generic record, check Trend/Pre-visit include it, and
+   reload, before giving any link to the user.
+6. No case failed to propagate: every generic range checked had lo <= hi,
+   and JS and Python agree. The only near-boundary note is inherited from
+   the named section, not generic: tomato-egg sodium 14.6 mg from its
+   upper bound.
