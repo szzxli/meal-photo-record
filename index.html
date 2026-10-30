@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2f6f4e">
+<title>家庭餐食拍照记录</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;margin:0;line-height:1.6;color:#222;background:#fff}
+header{padding:16px;border-bottom:1px solid #ddd}h1{font-size:22px;margin:0 0 8px}
+main{max-width:900px;margin:0 auto;padding:16px 16px 110px}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #ddd;display:flex;z-index:10}
+nav.bottom button{flex:1;min-height:60px;font-size:16px;background:#fff;border:0;padding-bottom:env(safe-area-inset-bottom)}
+nav.bottom button.active{background:#e6f0e9;font-weight:700}
+@media(min-width:800px){.layout{display:flex;gap:24px}nav.bottom{position:static;flex-direction:column;width:200px;border:1px solid #ddd;height:fit-content}nav.bottom button{text-align:left;padding:12px}main{padding-bottom:24px}}
+.box{border:1px solid #ccc;border-radius:8px;padding:16px;margin:16px 0}
+label{display:block;margin:10px 0}select,input,button{font-size:16px;padding:8px;min-height:44px}
+button{border-radius:8px;border:1px solid #2f6f4e;background:#2f6f4e;color:#fff}
+button.secondary{background:#fff;color:#2f6f4e}
+.out{font-size:18px}.warn{color:#7a3b00}small{color:#555}.page{display:none}.page.active{display:block}
+img.preview{max-width:100%;display:none;margin:10px 0}
+</style></head><body>
+<header><h1>家庭餐食拍照记录</h1>
+<p>只做记录和通用营养信息估算。输出只是范围，不是精确测量、不是称重、不是化验、不是诊断，不给个人目标，不做个人风险推断。个人目标与食谱判断只由医生或注册营养师定。</p>
+<p><strong>本 GitHub Pages 版本只保存在这台设备、这个浏览器里，不上传、不保存到服务端，每位访客互不干扰。换设备或清浏览器数据后记录不在。</strong>本页不向任何外部地址发请求，没有统计，没有个人健康字段。</p>
+<p class="warn"><b>注意：</b>本工具不从照片识别菜品和份量。你自己选菜、选份数。照片只作你自己回看的记录。碗体积只算体积，不换算成营养。</p></header>
+<div class="layout">
+<nav class="bottom" aria-label="导航">
+<button onclick="showPage('record',this)" class="active">记一餐</button>
+<button onclick="showPage('trend',this)">趋势</button>
+<button onclick="showPage('visit',this)">复诊前一页</button>
+<button onclick="showPage('bowls',this)">我的碗</button>
+</nav>
+<main>
+<section id="page-record" class="page active">
+<div class="box"><h2>记一餐</h2>
+<label>线 <select id="line" onchange="lineChange()"><option value="cn">中餐</option><option value="west">西餐</option></select></label>
+<label>菜品 <select id="dish"></select></label>
+<div id="cnFields">
+<label>吃了整锅的几分之几 <select id="share"><option value="0.5">1/2 锅</option><option value="0.3333333333" selected>1/3 锅</option><option value="0.25">1/4 锅</option><option value="0.2">1/5 锅</option></select></label>
+<label>酱油簇（不知道品牌就选“不知道”） <select id="soy"><option value="unknown" selected>不知道品牌（36.0–56.4 毫克/毫升）</option><option value="regular">普通酱油（56.4 毫克/毫升）</option><option value="reduced_salt">减盐酱油（36.0 毫克/毫升）</option><option value="none">没放酱油</option></select></label>
+</div>
+<div id="westFields" style="display:none">
+<label>盘直径（厘米） <select id="plateD"><option value="20">20</option><option value="25" selected>25</option><option value="30">30</option></select></label>
+<label>覆盖率 <select id="plateCov"><option value="0.3">30%</option><option value="0.5" selected>50%</option><option value="0.7">70%</option></select></label>
+<label>厚度（厘米） <select id="plateT"><option value="1">1</option><option value="1.5" selected>1.5</option><option value="2">2</option><option value="2.5">2.5</option></select></label>
+<label>另外加的盐（克，默认 0） <input id="saltG" type="number" step="0.1" min="0" value="0"></label>
+<small>西餐份量 = 盘面积 × 覆盖率 × 厚度 × 密度带 0.8–1.1 克/毫升，估算克数不是称重。基底从无盐食材值起步，盐按克数另加。</small>
+</div>
+<label>备注（可选） <input id="note" type="text" placeholder="例如：家人共煮"></label>
+<button onclick="calc()">算范围</button>
+<div class="out" id="out"></div><small id="detail"></small>
+</div>
+<div class="box"><h2>拍照记录（照片不识别，只作记录）</h2>
+<label>拍碗照片 <input type="file" id="photo" accept="image/*" capture="environment"></label>
+<img id="preview" class="preview" alt="">
+<button onclick="saveRecord()">记这一碗</button>
+<button class="secondary" onclick="clearRecords()">清空本地记录</button>
+<div id="records"></div>
+<small>照片只存在这台设备浏览器里，不上传。照片太大存不下时，只记范围、不存照片。</small>
+</div>
+</section>
+<section id="page-trend" class="page"><div class="box"><h2>趋势（按天合计范围）</h2><div id="trend"></div><small>合计是范围下限相加到上限相加，不是单数。只有记了记录的日子才出现，缺记的日子不等于没吃。</small></div></section>
+<section id="page-visit" class="page"><div class="box"><h2>复诊前一页（事实汇总，不是建议）</h2><div id="visit"></div><button onclick="downloadSummary()">下载汇总文本</button><small>这页只汇总你记过的事实，供医生自己判断，不给医生建议、不推断风险。</small></div></section>
+<section id="page-bowls" class="page"><div class="box"><h2>碗体积（只算体积，不算营养）</h2>
+<p>圆台满容 = π×高/3×(顶半径²+顶半径×底半径+底半径²)。底径未实测时用范围，体积就是范围。</p>
+<label>实测预设 <select id="preset" onchange="presetChange()"><option value="">自己填</option><option value="tiger">虎碗：顶径 11 厘米、高 5.5 厘米</option><option value="leaf">树叶纹大碗：顶径 20 厘米、高 5–6 厘米</option><option value="beaded">白色压边大碗：顶径 21 厘米、高 8 厘米</option><option value="plate">白色浅盘：直径 25 厘米（按盘算，不按碗）</option></select></label>
+<label>顶径（厘米） <input id="D" type="number" step="0.1"></label>
+<label>高（厘米） <input id="H" type="number" step="0.1"></label>
+<label>底径下限（厘米） <input id="dlo" type="number" step="0.1"></label>
+<label>底径上限（厘米） <input id="dhi" type="number" step="0.1"></label>
+<label>盛满比例 <input id="fill" type="number" step="0.05" min="0.1" max="1" value="0.75"></label>
+<button onclick="bowl()">算体积范围</button><div id="bowlout"></div>
+<small>浅盘按盘面积算，不按碗满容：25 厘米盘面积约 491 平方厘米，食物体积 = 面积 × 覆盖率 × 厚度。</small>
+</div></section>
+</main></div>
+<script>
+const TBSP=15, OIL_D=0.92, SALT_TSP=5.7, NA=393, OIL_KCAL=8.84;
+const SOY={regular:[56.4,56.4],reduced_salt:[36,36],unknown:[36,56.4],none:[0,0]};
+const BASE={egg:[155,11,124],tomato:[18,0.2,5],pork_mince:[242,18,65],silken_tofu:[55,2.7,7],cucumber:[15,0.1,2]};
+const CN={tomato_egg:'番茄炒蛋',mapo_tofu:'麻婆豆腐',cold_cucumber:'凉拌黄瓜'};
+const WEST={chicken:'烤鸡胸',salmon:'烤三文鱼',pasta_tomato:'意面番茄酱',brown_rice:'糙米'};
+const WEST_BASE={chicken:[[155,175],[3,4.5],[60,90]],salmon:[[190,220],[11,15],[50,70]],pasta_tomato:[[90,130],[1,2],[5,150]],brown_rice:[[110,125],[0.8,1],[1,5]]};
+function ing(lo,hi,k){const b=BASE[k];return [lo*b[0]/100,hi*b[0]/100,lo*b[1]/100,hi*b[1]/100,lo*b[2]/100,hi*b[2]/100];}
+function whole(dish,soy){
+  const s=SOY[soy];
+  if(dish==='tomato_egg'){const e=ing(150,240,'egg'),t=ing(300,720,'tomato');const ol=1.5*TBSP*OIL_D,oh=3*TBSP*OIL_D,sl=0.5*SALT_TSP,sh=1*SALT_TSP;return {kcal:[e[0]+t[0]+ol*OIL_KCAL,e[1]+t[1]+oh*OIL_KCAL+48],fat:[e[2]+t[2]+ol,e[3]+t[3]+oh],na:[e[4]+t[4]+sl*NA,e[5]+t[5]+sh*NA],note:'中餐整锅区间：蛋 150–240 克，番茄 300–720 克，油 1.5–3 汤匙，盐 0.5–1 茶匙，糖 0–1 汤匙。'};}
+  if(dish==='mapo_tofu'){const m=ing(150,250,'pork_mince'),f=ing(280,400,'silken_tofu');const oil=2*TBSP*OIL_D,sh=0.25*SALT_TSP;return {kcal:[m[0]+f[0]+oil*OIL_KCAL,m[1]+f[1]+oil*OIL_KCAL+16],fat:[m[2]+f[2]+oil,m[3]+f[3]+oil],na:[m[4]+f[4]+15*s[0]+500,m[5]+f[5]+sh*NA+15*s[1]+1500],note:'中餐整锅区间：肉末 150–250 克，豆腐 280–400 克，油 2 汤匙，酱油 1 汤匙，盐 0–0.25 茶匙，豆瓣酱钠 500–1500 毫克（宽假设，未按品牌定）。'};}
+  const c=ing(320,480,'cucumber');const oil=1*TBSP*OIL_D,salt=0.5*SALT_TSP;return {kcal:[c[0]+oil*OIL_KCAL,c[1]+oil*OIL_KCAL+8],fat:[c[2]+oil,c[3]+oil],na:[c[4]+salt*NA,c[5]+salt*NA+7.5*s[1]],note:'中餐整锅区间：黄瓜 320–480 克，油 1 汤匙，盐 0.5 茶匙，酱油 0–0.5 汤匙，糖 0–2 克。油只取 1 汤匙单值，所以脂肪范围窄是配方假设，不是实测精度。'};
+}
+function western(dish,D,cov,thick,saltG){
+  const vol=Math.PI*(D/2)*(D/2)*cov*thick; const glo=vol*0.8, ghi=vol*1.1; const b=WEST_BASE[dish]; const sna=saltG*NA;
+  return {vol:vol,grams:[glo,ghi],kcal:[glo*b[0][0]/100,ghi*b[0][1]/100],fat:[glo*b[1][0]/100,ghi*b[1][1]/100],na:[glo*b[2][0]/100+sna,ghi*b[2][1]/100+sna],note:'西餐估算：盘体积 '+vol.toFixed(1)+' 毫升，估算克数 '+glo.toFixed(1)+'–'+ghi.toFixed(1)+' 克（密度带 0.8–1.1 克/毫升假设，不是称重），基底无盐，盐 '+saltG+' 克另加。'};
+}
+function fmt(r){return r[0].toFixed(1)+'–'+r[1].toFixed(1);}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');if(id==='trend')renderTrend();if(id==='visit')renderVisit();}
+function lineChange(){const line=document.getElementById('line').value;const sel=document.getElementById('dish');const map=line==='cn'?CN:WEST;sel.innerHTML='';Object.keys(map).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=map[k];sel.appendChild(o);});document.getElementById('cnFields').style.display=line==='cn'?'block':'none';document.getElementById('westFields').style.display=line==='west'?'block':'none';calc();}
+let lastResult=null, photoData='';
+document.getElementById('photo').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{photoData=rd.result;const im=document.getElementById('preview');im.src=photoData;im.style.display='block';};rd.readAsDataURL(f);});
+function loadRecords(){try{return JSON.parse(localStorage.getItem('meal_records_gh')||'[]');}catch(e){return [];}}
+function saveRecords(r){localStorage.setItem('meal_records_gh',JSON.stringify(r));}
+function calc(){
+  const line=document.getElementById('line').value, dish=document.getElementById('dish').value; let r, note, label;
+  if(line==='cn'){const share=parseFloat(document.getElementById('share').value), soy=document.getElementById('soy').value; const w=whole(dish,soy); r={kcal:[w.kcal[0]*share,w.kcal[1]*share],fat:[w.fat[0]*share,w.fat[1]*share],na:[w.na[0]*share,w.na[1]*share]}; note=w.note; label=CN[dish]+'，'+document.getElementById('share').selectedOptions[0].text;}
+  else{const D=parseFloat(document.getElementById('plateD').value), cov=parseFloat(document.getElementById('plateCov').value), thick=parseFloat(document.getElementById('plateT').value), saltG=parseFloat(document.getElementById('saltG').value)||0; const w=western(dish,D,cov,thick,saltG); r={kcal:w.kcal,fat:w.fat,na:w.na}; note=w.note; label=WEST[dish]+'，盘 '+D+' 厘米、覆盖 '+Math.round(cov*100)+'%、厚 '+thick+' 厘米、盐 '+saltG+' 克';}
+  lastResult={line:line, dish:label, kcal:r.kcal, fat:r.fat, na:r.na, note:note};
+  document.getElementById('out').innerHTML='热量：'+fmt(r.kcal)+' 千卡<br>脂肪：'+fmt(r.fat)+' 克<br>钠：'+fmt(r.na)+' 毫克<br><small>对照通用参考：钠约为 FDA 每日参考 2300 毫克的 '+(r.na[0]/2300*100).toFixed(0)+'–'+(r.na[1]/2300*100).toFixed(0)+'%（通用参考，非个人目标）。</small>';
+  document.getElementById('detail').textContent=note;
+}
+function renderRecords(){
+  const recs=loadRecords(); const el=document.getElementById('records');
+  if(!recs.length){el.innerHTML='<p>暂无记录。</p>';return;}
+  let html='<h3>记录（'+recs.length+' 碗/盘）</h3>';
+  recs.slice().reverse().forEach(r=>{html+='<p>'+r.date+' · ['+(r.line==='cn'?'中餐':'西餐')+'] '+r.dish+'<br>热量 '+fmt(r.kcal)+' 千卡，脂肪 '+fmt(r.fat)+' 克，钠 '+fmt(r.na)+' 毫克'+(r.hasPhoto?' · 有照片':'')+(r.noteText?' · '+r.noteText:'')+'</p>'; if(r.photo) html+='<img src="'+r.photo+'" style="max-width:200px;display:block;margin:4px 0" alt="">';});
+  el.innerHTML=html;
+}
+function renderTrend(){
+  const recs=loadRecords(); const by={}; recs.forEach(r=>{const d=r.date.slice(0,10); if(!by[d])by[d]={kcal:[0,0],fat:[0,0],na:[0,0],n:0}; by[d].kcal[0]+=r.kcal[0];by[d].kcal[1]+=r.kcal[1];by[d].fat[0]+=r.fat[0];by[d].fat[1]+=r.fat[1];by[d].na[0]+=r.na[0];by[d].na[1]+=r.na[1];by[d].n++;});
+  const el=document.getElementById('trend'); if(!Object.keys(by).length){el.innerHTML='<p>暂无记录。</p>';return;}
+  let html=''; Object.keys(by).sort().reverse().forEach(d=>{const t=by[d]; html+='<p>'+d+'（'+t.n+' 碗/盘）：热量 '+fmt(t.kcal)+' 千卡，脂肪 '+fmt(t.fat)+' 克，钠 '+fmt(t.na)+' 毫克</p>';}); el.innerHTML=html;
+}
+function renderVisit(){
+  const recs=loadRecords(); const el=document.getElementById('visit');
+  if(!recs.length){el.innerHTML='<p>暂无记录。</p>';return;}
+  let sk=[0,0],sf=[0,0],sn=[0,0]; const days=new Set(), counts={};
+  recs.forEach(r=>{sk[0]+=r.kcal[0];sk[1]+=r.kcal[1];sf[0]+=r.fat[0];sf[1]+=r.fat[1];sn[0]+=r.na[0];sn[1]+=r.na[1];days.add(r.date.slice(0,10));counts[r.dish]=(counts[r.dish]||0)+1;});
+  let html='<p>记录总数：'+recs.length+' 碗/盘；有记录的天数：'+days.size+' 天（缺记的日子不计入合计）。</p><p>合计范围：热量 '+fmt(sk)+' 千卡，脂肪 '+fmt(sf)+' 克，钠 '+fmt(sn)+' 毫克。</p><p>钠合计对照通用参考：约为 FDA 每日参考 2300 毫克的 '+(sn[0]/2300*100).toFixed(0)+'–'+(sn[1]/2300*100).toFixed(0)+'%（这是多日合计除以单日参考的比值展示，不是个人目标）。</p><p>菜品次数：'+Object.keys(counts).map(k=>k+' '+counts[k]+' 次').join('，')+'</p>';
+  el.innerHTML=html;
+}
+function saveRecord(){
+  if(!lastResult){alert('请先点“算范围”。');return;}
+  const recs=loadRecords(); const rec={date:new Date().toLocaleString(), line:lastResult.line, dish:lastResult.dish, kcal:lastResult.kcal, fat:lastResult.fat, na:lastResult.na, noteText:document.getElementById('note').value||'', hasPhoto:!!photoData, photo:photoData||''};
+  recs.push(rec);
+  try{saveRecords(recs);}catch(e){rec.photo='';rec.hasPhoto=false;saveRecords(recs);alert('照片太大，本地存不下，已只记范围不存照片。');}
+  renderRecords(); renderTrend(); renderVisit();
+}
+function clearRecords(){localStorage.removeItem('meal_records_gh');photoData='';document.getElementById('preview').style.display='none';renderRecords();renderTrend();renderVisit();}
+function downloadSummary(){
+  const el=document.getElementById('visit'); const txt=el.innerText||'暂无记录'; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'})); a.download='meal-summary.txt'; a.click();
+}
+function vol(D,H,d){const R=D/2,r=d/2;return Math.PI*H/3*(R*R+R*r+r*r);}
+function presetChange(){
+  const p=document.getElementById('preset').value;
+  const set=(D,H,lo,hi)=>{document.getElementById('D').value=D;document.getElementById('H').value=H;document.getElementById('dlo').value=lo;document.getElementById('dhi').value=hi;};
+  if(p==='tiger')set(11,5.5,6,8);
+  if(p==='leaf'){document.getElementById('D').value=20;document.getElementById('H').value='';document.getElementById('dlo').value=9;document.getElementById('dhi').value=14;document.getElementById('bowlout').textContent='树叶纹大碗：顶径 20 厘米，实测高 5–6 厘米，底径 9–14 厘米为假设范围；请填你量过的高度再算，高 5–6 厘米时体积范围为 865–1376 毫升（体积，不是营养）。';return;}
+  if(p==='beaded')set(21,8,10,15);
+  if(p==='plate'){document.getElementById('bowlout').textContent='白色浅盘：直径 25 厘米，面积约 491 平方厘米，按盘算：体积 = 面积 × 覆盖率 × 厚度，不是碗满容。';return;}
+}
+function bowl(){
+  const D=parseFloat(document.getElementById('D').value), H=parseFloat(document.getElementById('H').value), lo=parseFloat(document.getElementById('dlo').value), hi=parseFloat(document.getElementById('dhi').value), fill=parseFloat(document.getElementById('fill').value);
+  if(!D||!H||!lo||!hi){document.getElementById('bowlout').textContent='请填顶径、高、底径下限和上限。';return;}
+  const vlo=vol(D,H,lo), vhi=vol(D,H,hi);
+  document.getElementById('bowlout').textContent='满容约 '+vlo.toFixed(0)+'–'+vhi.toFixed(0)+' 毫升；盛满 '+fill+' 后约 '+(vlo*fill).toFixed(0)+'–'+(vhi*fill).toFixed(0)+' 毫升（体积，不是营养）。';
+}
+lineChange(); renderRecords(); renderTrend(); renderVisit();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+</script></body></html>
