@@ -20,6 +20,10 @@ button{border-radius:8px;border:1px solid #2f6f4e;background:#2f6f4e;color:#fff}
 button.secondary{background:#fff;color:#2f6f4e}
 .out{font-size:18px}.warn{color:#7a3b00}small{color:#555}.page{display:none}.page.active{display:block}
 img.preview{max-width:100%;display:none;margin:10px 0}
+.photo-hero{border:3px solid #2f6f4e;border-radius:12px;padding:20px;margin:16px 0;background:#e6f0e9;text-align:center}
+.photo-hero h2{font-size:24px;margin:0 0 12px}
+label.photo-btn{display:block;width:100%;min-height:64px;line-height:64px;font-size:20px;font-weight:700;background:#2f6f4e;color:#fff;border-radius:12px;cursor:pointer}
+input#photo{position:absolute;opacity:0;width:1px;height:1px}
 </style></head><body>
 <header><h1>家庭餐食拍照记录</h1>
 <p>只做记录和通用营养信息估算。输出只是范围，不是精确测量、不是称重、不是化验、不是诊断，不给个人目标，不做个人风险推断。个人目标与食谱判断只由医生或注册营养师定。</p>
@@ -34,6 +38,11 @@ img.preview{max-width:100%;display:none;margin:10px 0}
 </nav>
 <main>
 <section id="page-record" class="page active">
+<div class="photo-hero"><h2>拍一碗照片</h2>
+<label class="photo-btn" for="photo">拍一碗照片</label>
+<input type="file" id="photo" accept="image/*" capture="environment">
+<img id="preview" class="preview" alt="">
+<p style="margin:8px 0 0"><small>先拍照，再往下选菜算范围。照片只作记录，不识别菜品，不上传。</small></p></div>
 <div class="box"><h2>记一餐</h2>
 <label>线 <select id="line" onchange="lineChange()"><option value="cn">中餐</option><option value="west">西餐</option><option value="generic">通用记一碗</option></select></label>
 <label id="dishLabel">菜品 <select id="dish"></select></label>
@@ -60,16 +69,12 @@ img.preview{max-width:100%;display:none;margin:10px 0}
 </div>
 <label>备注（可选） <input id="note" type="text" placeholder="例如：家人共煮"></label>
 <button onclick="calc()">算范围</button>
-<div class="out" id="out"></div><small id="detail"></small>
-</div>
-<div class="box"><h2>拍照记录（照片不识别，只作记录）</h2>
-<label>拍碗照片 <input type="file" id="photo" accept="image/*" capture="environment"></label>
-<img id="preview" class="preview" alt="">
 <button onclick="saveRecord()">记这一碗</button>
-<button class="secondary" onclick="clearRecords()">清空本地记录</button>
+<div class="out" id="out"></div><small id="detail"></small>
 <div id="records"></div>
-<small>照片只存在这台设备浏览器里，不上传。照片太大存不下时，只记范围、不存照片。</small>
+<button class="secondary" onclick="clearRecords()">清空本地记录</button>
 </div>
+<p><small>照片只存在这台设备浏览器里，不上传。照片太大存不下时，只记范围、不存照片。</small></p>
 </section>
 <section id="page-trend" class="page"><div class="box"><h2>趋势（按天合计范围）</h2><div id="trend"></div><small>合计是范围下限相加到上限相加，不是单数。只有记了记录的日子才出现，缺记的日子不等于没吃。</small></div></section>
 <section id="page-visit" class="page"><div class="box"><h2>复诊前一页（事实汇总，不是建议）</h2><div id="visit"></div><button onclick="downloadSummary()">下载汇总文本</button><small>这页只汇总你记过的事实，供医生自己判断，不给医生建议、不推断风险。</small></div></section>
