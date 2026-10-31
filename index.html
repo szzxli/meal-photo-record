@@ -39,8 +39,8 @@
 <button onclick="showPage('record',this)" class="active"><span class="nav-icon" aria-hidden="true">01</span><span>记一餐</span></button>
 <button onclick="showPage('trend',this)"><span class="nav-icon" aria-hidden="true">02</span><span>趋势</span></button>
 <button onclick="showPage('visit',this)"><span class="nav-icon" aria-hidden="true">03</span><span>复诊前一页</span></button>
-<button onclick="showPage('bowls',this)"><span class="nav-icon" aria-hidden="true">04</span><span>我的碗</span></button>
-<button onclick="showPage('health',this)"><span class="nav-icon" aria-hidden="true">05</span><span>健康记录</span></button>
+
+<button onclick="showPage('health',this)"><span class="nav-icon" aria-hidden="true">04</span><span>健康记录</span></button>
 </nav>
 <main>
 <section id="page-record" class="page active">
@@ -94,17 +94,6 @@
 </section>
 <section id="page-trend" class="page"><h2>这段时间的餐桌</h2><p class="page-intro">只汇总有留下记录的日子；空白不代表没有吃饭。</p><div class="box"><h2>趋势（按天合计范围）</h2><div id="trend"></div><small>合计是范围下限相加到上限相加，不是单数。只有记了记录的日子才出现，缺记的日子不等于没吃。</small></div><div class="box"><h2>按餐次合计（事实，不作判断）</h2><div id="trendSlots"></div><small>餐次由你自己选；未填的不进餐次合计。合计仍是范围相加，不是单数，不提示你该改哪一餐。</small></div></section>
 <section id="page-visit" class="page"><h2>带着自己的记录去复诊</h2><p class="page-intro">这里只整理你记过的事实，不替你判断，也不给医疗建议。</p><div class="box"><h2>复诊前一页（事实汇总，不是建议）</h2><div id="visit"></div><h3 style="font-size:18px">近 14 天钠合计范围（按天，范围带，不是单线）</h3><canvas id="trendChart" width="700" height="260" style="width:100%;height:auto;border:1px solid #ede8de;border-radius:13px;background:#faf8f2"></canvas><small>只画有记录的日子；缺记的日子不画、不补零、不等于没吃。图不分析趋势、不提示变化原因。</small><h3 style="font-size:18px">代表性餐食照片（本机小图，仅作回看）</h3><div id="visitThumbs" class="thumb-grid"></div><h3 style="font-size:18px">健康记录（事实清单，与餐食分开列出，不做对比分析）</h3><div id="visitHealth"></div><small>健康数字是你自己填的；工具不把它们和餐食画在同一张图上，不算相关性、不提示波动原因，关系由医生判断。</small><br><button onclick="window.print()">打印 / 保存为 PDF（单页）</button> <button onclick="downloadSummary()">下载汇总文本</button><small>这页只汇总你记过的事实，供医生自己判断，不给医生建议、不推断风险。打印时只打印这一页。</small></div></section>
-<section id="page-bowls" class="page"><h2>每家的碗，都有熟悉的样子</h2><p class="page-intro">记下常用碗盘的体积范围；这只是体积，不会换算成营养。</p><div class="box"><h2>碗体积（只算体积，不算营养）</h2>
-<p>圆台满容 = π×高/3×(顶半径²+顶半径×底半径+底半径²)。底径未实测时用范围，体积就是范围。</p>
-<label>实测预设 <select id="preset" onchange="presetChange()"><option value="">自己填</option><option value="tiger">虎碗：顶径 11 厘米、高 5.5 厘米</option><option value="leaf">树叶纹大碗：顶径 20 厘米、高 5–6 厘米</option><option value="beaded">白色压边大碗：顶径 21 厘米、高 8 厘米</option><option value="plate">白色浅盘：直径 25 厘米（按盘算，不按碗）</option></select></label>
-<label>顶径（厘米） <input id="D" type="number" step="0.1"></label>
-<label>高（厘米） <input id="H" type="number" step="0.1"></label>
-<label>底径下限（厘米） <input id="dlo" type="number" step="0.1"></label>
-<label>底径上限（厘米） <input id="dhi" type="number" step="0.1"></label>
-<label>盛满比例 <input id="fill" type="number" step="0.05" min="0.1" max="1" value="0.75"></label>
-<button onclick="bowl()">算体积范围</button><div id="bowlout"></div>
-<small>浅盘按盘面积算，不按碗满容：25 厘米盘面积约 491 平方厘米，食物体积 = 面积 × 覆盖率 × 厚度。</small>
-</div></section>
 <section id="page-health" class="page"><h2>健康记录</h2><p class="page-intro">只记你自己填的数字，不分析、不对比、不推断。数据只存本机，不上传。</p><div class="box"><h2>记一条健康数字</h2><p class="box-intro">血压和血脂分开记，不会和餐食画在同一张图上，也不会算它们和饮食的关系。</p>
 <label>类型 <select id="healthType" onchange="healthTypeChange()"><option value="bp">血压</option><option value="lipid">血脂化验</option></select></label>
 <label>日期 <input id="healthDate" type="date"></label>
@@ -222,21 +211,9 @@ function clearRecords(){localStorage.removeItem('meal_records_gh');photoData='';
 function downloadSummary(){
   const el=document.getElementById('visit'); const txt=el.innerText||'暂无记录'; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'})); a.download='meal-summary.txt'; a.click();
 }
-function vol(D,H,d){const R=D/2,r=d/2;return Math.PI*H/3*(R*R+R*r+r*r);}
-function presetChange(){
-  const p=document.getElementById('preset').value;
-  const set=(D,H,lo,hi)=>{document.getElementById('D').value=D;document.getElementById('H').value=H;document.getElementById('dlo').value=lo;document.getElementById('dhi').value=hi;};
-  if(p==='tiger')set(11,5.5,6,8);
-  if(p==='leaf'){document.getElementById('D').value=20;document.getElementById('H').value='';document.getElementById('dlo').value=9;document.getElementById('dhi').value=14;document.getElementById('bowlout').textContent='树叶纹大碗：顶径 20 厘米，实测高 5–6 厘米，底径 9–14 厘米为假设范围；请填你量过的高度再算，高 5–6 厘米时体积范围为 865–1376 毫升（体积，不是营养）。';return;}
-  if(p==='beaded')set(21,8,10,15);
-  if(p==='plate'){document.getElementById('bowlout').textContent='白色浅盘：直径 25 厘米，面积约 491 平方厘米，按盘算：体积 = 面积 × 覆盖率 × 厚度，不是碗满容。';return;}
-}
-function bowl(){
-  const D=parseFloat(document.getElementById('D').value), H=parseFloat(document.getElementById('H').value), lo=parseFloat(document.getElementById('dlo').value), hi=parseFloat(document.getElementById('dhi').value), fill=parseFloat(document.getElementById('fill').value);
-  if(!D||!H||!lo||!hi){document.getElementById('bowlout').textContent='请填顶径、高、底径下限和上限。';return;}
-  const vlo=vol(D,H,lo), vhi=vol(D,H,hi);
-  document.getElementById('bowlout').textContent='满容约 '+vlo.toFixed(0)+'–'+vhi.toFixed(0)+' 毫升；盛满 '+fill+' 后约 '+(vlo*fill).toFixed(0)+'–'+(vhi*fill).toFixed(0)+' 毫升（体积，不是营养）。';
-}
+
+
+
 lineChange(); renderRecords(); renderTrend(); renderVisit(); renderHealth();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 </script></body></html>

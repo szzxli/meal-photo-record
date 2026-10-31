@@ -161,3 +161,8 @@ Honest limits of this generic section (do not hide):
 - Health records (new page 健康记录, 5th nav item): user-entered only, localStorage 'health_records_gh', separate from meal records. BP: systolic/diastolic mmHg + date + note. Lipid: item (total cholesterol / triglycerides / LDL / HDL / other) + value + unit (mg/dL or mmol/L) + date + note. No averages, no chart overlay with meals, no correlation, no change analysis. Pre-visit page lists them as a separate factual list only. Clearing health records does not clear meals. Usage-details text updated: the old "no personal health fields" claim is removed.
 - NOT built: DASH/Mediterranean score or "达标" judgment, auto food segmentation, BP-vs-diet correlation chart, saturated-fat heatmap.
 - Checks: JS node --check PASS, sw.js PASS, 0 external URLs, named 30/30 and generic propagation still PASS (calculation constants unchanged). Live-browser retest still required before calling this version verified.
+
+## Bowl page removed 2026-10-30 (user: redundant)
+- Reason, in the user's words: eating bowls are different shapes per meal, and no user has patience to fill in different bowls. A once-measured bowl does not generalise, and per-meal dimension entry is friction, not value.
+- Removed: nav item 我的碗, the whole page-bowls section, and the dead bowl-only JS (vol/presetChange/bowl). No calculation changed: per-meal ranges still use pot share / plate area / user-picked gram band (one tap, not dimensions).
+- Checks: JS node --check PASS, named 30/30, generic propagation PASS. Live-browser retest still required.
