@@ -12,6 +12,9 @@
 @media(max-width:760px){.hero-shell{grid-template-columns:minmax(0,1fr) 112px;gap:8px}.hero-art{width:112px}.hero-copy h1{font-size:clamp(28px,7vw,42px)}.layout{display:flex;flex-direction:column;gap:16px;margin:21px auto 0;padding:0 15px}.layout nav.bottom{position:fixed;top:auto;left:0;right:0;bottom:0;display:flex;flex-direction:row;gap:3px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));border:0;border-top:1px solid #e4dfd4;border-radius:17px 17px 0 0;background:rgba(255,253,248,.96);box-shadow:0 -8px 24px rgba(49,54,42,.12);backdrop-filter:blur(16px)}nav.bottom button{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0;min-height:52px;padding:4px 3px;border-radius:11px;text-align:center;font-size:10px;white-space:nowrap}.nav-icon{width:20px;height:20px;font-size:8px}.layout main{max-width:none;padding:0 0 calc(93px + env(safe-area-inset-bottom))}.photo-hero{grid-template-columns:minmax(0,1fr) 106px;gap:2px;padding:20px 18px}.plate-illustration{min-height:108px}.plate-illustration svg{width:108px}.photo-hero h2{font-size:23px}.box{border-radius:18px}.page>h2{font-size:26px}.usage-details{margin-top:14px}.trust-row{margin-top:20px}}
 @media(max-width:420px){header.site-header{padding:25px 17px 20px}.hero-shell{grid-template-columns:minmax(0,1fr) 78px;gap:4px}.hero-art{width:78px}.brand-line{font-size:10px;letter-spacing:.07em}.brand-stamp{width:29px;height:29px}.hero-copy h1{font-size:29px}.hero-lede{font-size:13px}.hero-kicker{margin-top:14px;font-size:11px;padding:6px 10px}.trust-row{gap:6px}.trust-pill{font-size:10px;padding:6px 8px}.photo-hero{grid-template-columns:minmax(0,1fr) 72px}.plate-illustration svg{width:76px}.photo-hero h2{font-size:21px}.scene-chips{gap:6px}.scene-chip{padding:6px 9px;font-size:11px}.box button:not(.scene-chip){width:100%;margin-top:8px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+.thumb-grid{display:flex;flex-wrap:wrap;gap:8px}.thumb-grid figure{margin:0;width:84px}.thumb-grid img{width:84px;height:84px;object-fit:cover;border-radius:10px}.thumb-grid figcaption{font-size:11px;color:#74796f;line-height:1.4}
+.frame-btn{margin:10px 0 0;padding:8px 14px;border:1px solid var(--forest);border-radius:99px;background:transparent;color:var(--forest);font-size:13px;font-weight:700}
+@media print{@page{size:A4;margin:12mm}body{background:#fff}header.site-header,nav.bottom,.layout nav,button{display:none!important}.layout{display:block;max-width:none;margin:0;padding:0}main{max-width:none;padding:0}.page{display:none!important}#page-visit{display:block!important}.page>h2,.page-intro{display:block!important}.box{box-shadow:none;border:1px solid #999}.thumb-grid img{width:70px;height:70px}}
 </style></head><body>
 <header class="site-header">
 <div class="hero-shell">
@@ -29,7 +32,7 @@
   </svg>
 </div>
 <div class="trust-row" aria-label="记录边界"><span class="trust-pill">只保存在本机浏览器</span><span class="trust-pill">照片不上传、不识别</span><span class="trust-pill">每位访客各自记录</span><span class="trust-pill">估算给范围，不作诊断</span></div>
-<details class="usage-details"><summary>使用说明与边界</summary><p>只做记录和通用营养信息估算。输出只是范围，不是精确测量、不是称重、不是化验、不是诊断，不给个人目标，不做个人风险推断；个人目标与食谱判断只由医生或注册营养师定。照片仅供自己回看，菜品和份量由你自己选择。本 GitHub Pages 版本不向任何外部地址发请求、没有统计、没有个人健康字段；换设备或清理浏览器数据后记录不会保留。碗体积只算体积，不换算成营养。通用记一碗是宽范围假设，未按具体菜验证。</p></details>
+<details class="usage-details"><summary>使用说明与边界</summary><p>只做记录和通用营养信息估算。输出只是范围，不是精确测量、不是称重、不是化验、不是诊断，不给个人目标，不做个人风险推断；个人目标与食谱判断只由医生或注册营养师定。照片仅供自己回看，菜品和份量由你自己选择。本 GitHub Pages 版本不向任何外部地址发请求、没有统计；健康记录是你自己填的数字，只存本机，工具不分析；换设备或清理浏览器数据后记录不会保留。碗体积只算体积，不换算成营养。通用记一碗是宽范围假设，未按具体菜验证。</p></details>
 </header>
 <div class="layout">
 <nav class="bottom" aria-label="导航">
@@ -37,6 +40,7 @@
 <button onclick="showPage('trend',this)"><span class="nav-icon" aria-hidden="true">02</span><span>趋势</span></button>
 <button onclick="showPage('visit',this)"><span class="nav-icon" aria-hidden="true">03</span><span>复诊前一页</span></button>
 <button onclick="showPage('bowls',this)"><span class="nav-icon" aria-hidden="true">04</span><span>我的碗</span></button>
+<button onclick="showPage('health',this)"><span class="nav-icon" aria-hidden="true">05</span><span>健康记录</span></button>
 </nav>
 <main>
 <section id="page-record" class="page active">
@@ -46,7 +50,7 @@
 <label class="photo-btn" for="photo">拍下这一餐</label></div>
 <div class="plate-illustration" aria-hidden="true"><svg viewBox="0 0 180 180"><circle cx="90" cy="90" r="78" fill="#d8c5a5"/><circle cx="90" cy="90" r="68" fill="#fffaf1"/><circle cx="90" cy="90" r="55" fill="none" stroke="#d3bb94" stroke-width="2"/><path d="M52 97c10-22 34-31 58-17 14 8 17 20 9 35-11 17-44 22-62 8-8-7-10-16-5-26Z" fill="#728d62"/><path d="M64 100c17-3 31-13 42-28M80 123c5-14 13-27 27-37" fill="none" stroke="#f3ead8" stroke-width="3" stroke-linecap="round"/><circle cx="63" cy="72" r="7" fill="#bf6646"/><circle cx="120" cy="68" r="7" fill="#d4a65d"/><circle cx="126" cy="119" r="6" fill="#bf6646"/><path d="M29 156h122" stroke="#c4ad88" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg></div>
 <input type="file" id="photo" accept="image/*" capture="environment">
-<img id="preview" class="preview" alt="你刚刚拍摄的餐食照片">
+<div id="previewWrap" style="display:none;position:relative;grid-column:1/-1;max-width:min(100%,460px);margin:14px auto 0"><img id="preview" class="preview" alt="你刚刚拍摄的餐食照片" style="width:100%;max-height:340px;object-fit:contain;margin:0"><div id="frameOverlay" style="display:none;position:absolute;inset:0;pointer-events:none"><svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%"><circle cx="50" cy="50" r="47" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 3"/><line x1="50" y1="3" x2="50" y2="97" stroke="#fff" stroke-width="1" stroke-dasharray="4 3"/><line x1="3" y1="50" x2="97" y2="50" stroke="#fff" stroke-width="1" stroke-dasharray="4 3"/></svg><span style="position:absolute;left:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:3px 7px;border-radius:99px">餐盘框线参考：只帮对齐，不算比例、不算营养</span></div></div><button type="button" class="frame-btn" onclick="toggleFrame()">显示餐盘框线</button>
 <p class="privacy-caption">照片只作自己回看的记录，不识别菜品、不上传。可以先拍，也可以直接往下填写。</p></div>
 <div class="box"><span class="eyebrow">一份记录 · 从这一碗开始</span><h2>今天这桌，吃了些什么？</h2><p class="box-intro">照片由你自己拍，菜名和份量由你自己选；结果只给宽范围，记录留在这台设备里。</p>
 <label>线 <select id="line" onchange="lineChange()"><option value="cn">中餐</option><option value="west">西餐</option><option value="generic">通用记一碗</option></select></label>
@@ -72,6 +76,7 @@
 <label>一碗份量（估算克数带，不是称重） <select id="genBowl"><option value="small">小碗 150–250 克</option><option value="medium" selected>中碗 200–350 克</option><option value="large">大碗 300–500 克</option></select></label>
 <small>通用组基底是每 100 克的通用假设区间，不是这道具体菜的实测值；做法不另算油盐，避免重复计算。酱油按未知品牌簇 36.0–56.4 毫克/毫升算，盐按 393 毫克/克算。</small>
 </div>
+<label>餐次（自己选，用于按餐次汇总事实，不作判断） <select id="mealSlot"><option value="">不填</option><option value="早餐">早餐</option><option value="午餐">午餐</option><option value="晚餐">晚餐</option><option value="外卖">外卖</option><option value="夜宵/加餐">夜宵/加餐</option></select></label>
 <label>备注（可选） <input id="note" type="text" placeholder="例如：周日和家人一起做的番茄炒蛋"></label>
 <div class="scene-block"><p class="scene-title">给这顿饭加个小标签</p><p class="scene-subtitle">只会写进本机备注，想记时再选。</p><div class="scene-chips" role="group" aria-label="餐桌场景快捷备注">
 <button type="button" class="scene-chip" aria-pressed="false" onclick="selectScene(this,'家常晚餐')">家常晚餐</button>
@@ -87,8 +92,8 @@
 </div>
 <p><small>照片只存在这台设备浏览器里，不上传。照片太大存不下时，只记范围、不存照片。</small></p>
 </section>
-<section id="page-trend" class="page"><h2>这段时间的餐桌</h2><p class="page-intro">只汇总有留下记录的日子；空白不代表没有吃饭。</p><div class="box"><h2>趋势（按天合计范围）</h2><div id="trend"></div><small>合计是范围下限相加到上限相加，不是单数。只有记了记录的日子才出现，缺记的日子不等于没吃。</small></div></section>
-<section id="page-visit" class="page"><h2>带着自己的记录去复诊</h2><p class="page-intro">这里只整理你记过的事实，不替你判断，也不给医疗建议。</p><div class="box"><h2>复诊前一页（事实汇总，不是建议）</h2><div id="visit"></div><button onclick="downloadSummary()">下载汇总文本</button><small>这页只汇总你记过的事实，供医生自己判断，不给医生建议、不推断风险。</small></div></section>
+<section id="page-trend" class="page"><h2>这段时间的餐桌</h2><p class="page-intro">只汇总有留下记录的日子；空白不代表没有吃饭。</p><div class="box"><h2>趋势（按天合计范围）</h2><div id="trend"></div><small>合计是范围下限相加到上限相加，不是单数。只有记了记录的日子才出现，缺记的日子不等于没吃。</small></div><div class="box"><h2>按餐次合计（事实，不作判断）</h2><div id="trendSlots"></div><small>餐次由你自己选；未填的不进餐次合计。合计仍是范围相加，不是单数，不提示你该改哪一餐。</small></div></section>
+<section id="page-visit" class="page"><h2>带着自己的记录去复诊</h2><p class="page-intro">这里只整理你记过的事实，不替你判断，也不给医疗建议。</p><div class="box"><h2>复诊前一页（事实汇总，不是建议）</h2><div id="visit"></div><h3 style="font-size:18px">近 14 天钠合计范围（按天，范围带，不是单线）</h3><canvas id="trendChart" width="700" height="260" style="width:100%;height:auto;border:1px solid #ede8de;border-radius:13px;background:#faf8f2"></canvas><small>只画有记录的日子；缺记的日子不画、不补零、不等于没吃。图不分析趋势、不提示变化原因。</small><h3 style="font-size:18px">代表性餐食照片（本机小图，仅作回看）</h3><div id="visitThumbs" class="thumb-grid"></div><h3 style="font-size:18px">健康记录（事实清单，与餐食分开列出，不做对比分析）</h3><div id="visitHealth"></div><small>健康数字是你自己填的；工具不把它们和餐食画在同一张图上，不算相关性、不提示波动原因，关系由医生判断。</small><br><button onclick="window.print()">打印 / 保存为 PDF（单页）</button> <button onclick="downloadSummary()">下载汇总文本</button><small>这页只汇总你记过的事实，供医生自己判断，不给医生建议、不推断风险。打印时只打印这一页。</small></div></section>
 <section id="page-bowls" class="page"><h2>每家的碗，都有熟悉的样子</h2><p class="page-intro">记下常用碗盘的体积范围；这只是体积，不会换算成营养。</p><div class="box"><h2>碗体积（只算体积，不算营养）</h2>
 <p>圆台满容 = π×高/3×(顶半径²+顶半径×底半径+底半径²)。底径未实测时用范围，体积就是范围。</p>
 <label>实测预设 <select id="preset" onchange="presetChange()"><option value="">自己填</option><option value="tiger">虎碗：顶径 11 厘米、高 5.5 厘米</option><option value="leaf">树叶纹大碗：顶径 20 厘米、高 5–6 厘米</option><option value="beaded">白色压边大碗：顶径 21 厘米、高 8 厘米</option><option value="plate">白色浅盘：直径 25 厘米（按盘算，不按碗）</option></select></label>
@@ -100,6 +105,16 @@
 <button onclick="bowl()">算体积范围</button><div id="bowlout"></div>
 <small>浅盘按盘面积算，不按碗满容：25 厘米盘面积约 491 平方厘米，食物体积 = 面积 × 覆盖率 × 厚度。</small>
 </div></section>
+<section id="page-health" class="page"><h2>健康记录</h2><p class="page-intro">只记你自己填的数字，不分析、不对比、不推断。数据只存本机，不上传。</p><div class="box"><h2>记一条健康数字</h2><p class="box-intro">血压和血脂分开记，不会和餐食画在同一张图上，也不会算它们和饮食的关系。</p>
+<label>类型 <select id="healthType" onchange="healthTypeChange()"><option value="bp">血压</option><option value="lipid">血脂化验</option></select></label>
+<label>日期 <input id="healthDate" type="date"></label>
+<div id="bpFields"><label>收缩压（毫米汞柱） <input id="bpSys" type="number" min="40" max="300" placeholder="例如：120"></label><label>舒张压（毫米汞柱） <input id="bpDia" type="number" min="30" max="200" placeholder="例如：80"></label></div>
+<div id="lipidFields" style="display:none"><label>项目 <select id="lipidItem"><option value="总胆固醇">总胆固醇</option><option value="甘油三酯">甘油三酯</option><option value="低密度脂蛋白">低密度脂蛋白</option><option value="高密度脂蛋白">高密度脂蛋白</option><option value="其他">其他（写在备注里）</option></select></label><label>数值 <input id="lipidVal" type="number" step="0.01" placeholder="按化验单上的数字填"></label><label>单位 <select id="lipidUnit"><option value="mg/dL">mg/dL</option><option value="mmol/L">mmol/L</option></select></label></div>
+<label>备注（可选，例如：早晨测量、化验单日期） <input id="healthNote" type="text"></label>
+<button onclick="saveHealth()">保存这条健康记录</button>
+<div id="healthList" style="margin-top:18px"></div>
+<button class="secondary" onclick="clearHealth()">清空本地健康记录</button>
+<small>注意：这里只是你自己的事实记录本，不是诊断、不是化验解读；数值什么意思、要不要处理，只由医生判断。清空健康记录不影响餐食记录。</small></div></section>
 </main></div>
 <script>
 const TBSP=15, OIL_D=0.92, SALT_TSP=5.7, NA=393, OIL_KCAL=8.84;
@@ -135,6 +150,14 @@ function generic(group,method,oilLevel,saltLevel,bowl){
 }
 function fmt(r){return r[0].toFixed(1)+'–'+r[1].toFixed(1);}
 
+function toggleFrame(){const o=document.getElementById('frameOverlay');const show=o.style.display==='none';o.style.display=show?'block':'none';event.target.textContent=show?'隐藏餐盘框线':'显示餐盘框线';}
+function healthTypeChange(){const t=document.getElementById('healthType').value;document.getElementById('bpFields').style.display=t==='bp'?'block':'none';document.getElementById('lipidFields').style.display=t==='lipid'?'block':'none';}
+function loadHealth(){try{return JSON.parse(localStorage.getItem('health_records_gh')||'[]');}catch(e){return [];}}
+function saveHealthList(r){localStorage.setItem('health_records_gh',JSON.stringify(r));}
+function healthText(r){return r.type==='bp' ? ('血压 '+r.sys+'/'+r.dia+' 毫米汞柱') : ('血脂 '+r.item+' '+r.val+' '+r.unit);}
+function renderHealth(){const recs=loadHealth();const el=document.getElementById('healthList');if(!recs.length){el.innerHTML='<p>暂无健康记录。</p>';return;}el.innerHTML='<h3>健康记录（'+recs.length+' 条，事实清单）</h3>'+recs.slice().reverse().map(r=>'<p>'+r.date+' · '+healthText(r)+(r.note?' · '+r.note:'')+'</p>').join('');}
+function saveHealth(){const type=document.getElementById('healthType').value;const date=document.getElementById('healthDate').value||new Date().toISOString().slice(0,10);const note=document.getElementById('healthNote').value||'';let rec={date:date,type:type,note:note};if(type==='bp'){const s=document.getElementById('bpSys').value,d=document.getElementById('bpDia').value;if(!s||!d){alert('请填收缩压和舒张压。');return;}rec.sys=s;rec.dia=d;}else{const v=document.getElementById('lipidVal').value;if(!v){alert('请填化验数值。');return;}rec.item=document.getElementById('lipidItem').value;rec.val=v;rec.unit=document.getElementById('lipidUnit').value;}const recs=loadHealth();recs.push(rec);saveHealthList(recs);renderHealth();renderVisit();}
+function clearHealth(){localStorage.removeItem('health_records_gh');renderHealth();renderVisit();}
 function selectScene(btn,scene){
   const note=document.getElementById('note');
   const prefix=/^餐桌场景：[\s\S]*?(?:；|$)/;
@@ -146,10 +169,10 @@ function selectScene(btn,scene){
   note.value='餐桌场景：'+scene+(rest?'；'+rest:'');
   btn.classList.add('selected');btn.setAttribute('aria-pressed','true');
 }
-function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');if(id==='trend')renderTrend();if(id==='visit')renderVisit();}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');if(id==='trend')renderTrend();if(id==='visit')renderVisit();if(id==='health')renderHealth();}
 function lineChange(){const line=document.getElementById('line').value;const sel=document.getElementById('dish');if(line!=='generic'){const map=line==='cn'?CN:WEST;sel.innerHTML='';Object.keys(map).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=map[k];sel.appendChild(o);});}document.getElementById('dishLabel').style.display=line==='generic'?'none':'block';document.getElementById('cnFields').style.display=line==='cn'?'block':'none';document.getElementById('westFields').style.display=line==='west'?'block':'none';document.getElementById('genFields').style.display=line==='generic'?'block':'none';calc();}
 let lastResult=null, photoData='';
-document.getElementById('photo').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{photoData=rd.result;const im=document.getElementById('preview');im.src=photoData;im.style.display='block';};rd.readAsDataURL(f);});
+document.getElementById('photo').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{photoData=rd.result;const im=document.getElementById('preview');im.src=photoData;im.style.display='block';document.getElementById('previewWrap').style.display='block';};rd.readAsDataURL(f);});
 function loadRecords(){try{return JSON.parse(localStorage.getItem('meal_records_gh')||'[]');}catch(e){return [];}}
 function saveRecords(r){localStorage.setItem('meal_records_gh',JSON.stringify(r));}
 function calc(){
@@ -165,13 +188,15 @@ function renderRecords(){
   const recs=loadRecords(); const el=document.getElementById('records');
   if(!recs.length){el.innerHTML='<p>暂无记录。</p>';return;}
   let html='<h3>记录（'+recs.length+' 碗/盘）</h3>';
-  recs.slice().reverse().forEach(r=>{html+='<p>'+r.date+' · ['+(r.line==='generic'?'通用':(r.line==='cn'?'中餐':'西餐'))+'] '+r.dish+'<br>热量 '+fmt(r.kcal)+' 千卡，脂肪 '+fmt(r.fat)+' 克，钠 '+fmt(r.na)+' 毫克'+(r.hasPhoto?' · 有照片':'')+(r.noteText?' · '+r.noteText:'')+'</p>'; if(r.photo) html+='<img src="'+r.photo+'" style="max-width:200px;display:block;margin:4px 0" alt="">';});
+  recs.slice().reverse().forEach(r=>{html+='<p>'+r.date+' · ['+(r.line==='generic'?'通用':(r.line==='cn'?'中餐':'西餐'))+'] '+r.dish+(r.mealSlot?' · 餐次：'+r.mealSlot:'')+'<br>热量 '+fmt(r.kcal)+' 千卡，脂肪 '+fmt(r.fat)+' 克，钠 '+fmt(r.na)+' 毫克'+(r.hasPhoto?' · 有照片':'')+(r.noteText?' · '+r.noteText:'')+'</p>'; if(r.photo) html+='<img src="'+r.photo+'" style="max-width:200px;display:block;margin:4px 0" alt="">';});
   el.innerHTML=html;
 }
 function renderTrend(){
   const recs=loadRecords(); const by={}; recs.forEach(r=>{const d=r.date.slice(0,10); if(!by[d])by[d]={kcal:[0,0],fat:[0,0],na:[0,0],n:0}; by[d].kcal[0]+=r.kcal[0];by[d].kcal[1]+=r.kcal[1];by[d].fat[0]+=r.fat[0];by[d].fat[1]+=r.fat[1];by[d].na[0]+=r.na[0];by[d].na[1]+=r.na[1];by[d].n++;});
   const el=document.getElementById('trend'); if(!Object.keys(by).length){el.innerHTML='<p>暂无记录。</p>';return;}
   let html=''; Object.keys(by).sort().reverse().forEach(d=>{const t=by[d]; html+='<p>'+d+'（'+t.n+' 碗/盘）：热量 '+fmt(t.kcal)+' 千卡，脂肪 '+fmt(t.fat)+' 克，钠 '+fmt(t.na)+' 毫克</p>';}); el.innerHTML=html;
+  const slots={}; recs.forEach(r=>{if(!r.mealSlot)return;if(!slots[r.mealSlot])slots[r.mealSlot]={kcal:[0,0],fat:[0,0],na:[0,0],n:0};slots[r.mealSlot].kcal[0]+=r.kcal[0];slots[r.mealSlot].kcal[1]+=r.kcal[1];slots[r.mealSlot].fat[0]+=r.fat[0];slots[r.mealSlot].fat[1]+=r.fat[1];slots[r.mealSlot].na[0]+=r.na[0];slots[r.mealSlot].na[1]+=r.na[1];slots[r.mealSlot].n++;});
+  const sel=document.getElementById('trendSlots');if(sel){if(!Object.keys(slots).length){sel.innerHTML='<p>暂无已填餐次的记录。</p>';}else{sel.innerHTML=Object.keys(slots).map(k=>{const s=slots[k];return '<p>'+k+'（'+s.n+' 碗/盘）：热量 '+fmt(s.kcal)+' 千卡，脂肪 '+fmt(s.fat)+' 克，钠 '+fmt(s.na)+' 毫克</p>';}).join('');}}
 }
 function renderVisit(){
   const recs=loadRecords(); const el=document.getElementById('visit');
@@ -180,15 +205,20 @@ function renderVisit(){
   recs.forEach(r=>{sk[0]+=r.kcal[0];sk[1]+=r.kcal[1];sf[0]+=r.fat[0];sf[1]+=r.fat[1];sn[0]+=r.na[0];sn[1]+=r.na[1];days.add(r.date.slice(0,10));counts[r.dish]=(counts[r.dish]||0)+1;});
   let html='<p>记录总数：'+recs.length+' 碗/盘；有记录的天数：'+days.size+' 天（缺记的日子不计入合计）。</p><p>合计范围：热量 '+fmt(sk)+' 千卡，脂肪 '+fmt(sf)+' 克，钠 '+fmt(sn)+' 毫克。</p><p>钠合计对照通用参考：约为 FDA 每日参考 2300 毫克的 '+(sn[0]/2300*100).toFixed(0)+'–'+(sn[1]/2300*100).toFixed(0)+'%（这是多日合计除以单日参考的比值展示，不是个人目标）。</p><p>菜品次数：'+Object.keys(counts).map(k=>k+' '+counts[k]+' 次').join('，')+'</p>';
   el.innerHTML=html;
+  const by2={}; recs.forEach(r=>{const d=r.date.slice(0,10);if(!by2[d])by2[d]=[0,0];by2[d][0]+=r.na[0];by2[d][1]+=r.na[1];});
+  const daysSorted=Object.keys(by2).sort().slice(-14); const cv=document.getElementById('trendChart');
+  if(cv){const ctx=cv.getContext('2d');ctx.clearRect(0,0,700,260);ctx.fillStyle='#faf8f2';ctx.fillRect(0,0,700,260);if(daysSorted.length){let mx=0;daysSorted.forEach(d=>{mx=Math.max(mx,by2[d][1]);});mx=mx*1.15||1;const x0=50,x1=680,y0=20,y1=220;ctx.strokeStyle='#c9c2b2';ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x0,y1);ctx.lineTo(x1,y1);ctx.stroke();ctx.fillStyle='#dbe6d6';ctx.beginPath();daysSorted.forEach((d,i)=>{const x=x0+(x1-x0)*(daysSorted.length===1?0.5:i/(daysSorted.length-1));const ylo=y1-(by2[d][0]/mx)*(y1-y0),yhi=y1-(by2[d][1]/mx)*(y1-y0);if(i===0)ctx.moveTo(x,yhi);else ctx.lineTo(x,yhi);});for(let i=daysSorted.length-1;i>=0;i--){const d=daysSorted[i];const x=x0+(x1-x0)*(daysSorted.length===1?0.5:i/(daysSorted.length-1));const ylo=y1-(by2[d][0]/mx)*(y1-y0);ctx.lineTo(x,ylo);}ctx.closePath();ctx.fill();ctx.fillStyle='#234735';ctx.font='12px sans-serif';daysSorted.forEach((d,i)=>{const x=x0+(x1-x0)*(daysSorted.length===1?0.5:i/(daysSorted.length-1));ctx.fillText(d.slice(5),x-14,y1+18);});ctx.fillText('钠毫克/天（范围带）',x0,y0-6);}}
+  const th=document.getElementById('visitThumbs');if(th){const withPhoto=recs.filter(r=>r.photo).slice(-12);th.innerHTML=withPhoto.length?withPhoto.map(r=>'<figure><img src="'+r.photo+'" alt=""><figcaption>'+r.date.slice(0,10)+' '+r.dish+'</figcaption></figure>').join(''):'<p>暂无带照片的记录。</p>';}
+  const vh=document.getElementById('visitHealth');if(vh){const hr=loadHealth();vh.innerHTML=hr.length?hr.slice().reverse().map(r=>'<p>'+r.date+' · '+healthText(r)+(r.note?' · '+r.note:'')+'</p>').join(''):'<p>暂无健康记录。</p>';}
 }
 function saveRecord(){
   if(!lastResult){alert('请先点“算范围”。');return;}
-  const recs=loadRecords(); const rec={date:new Date().toLocaleString(), line:lastResult.line, dish:lastResult.dish, kcal:lastResult.kcal, fat:lastResult.fat, na:lastResult.na, noteText:document.getElementById('note').value||'', hasPhoto:!!photoData, photo:photoData||''};
+  const recs=loadRecords(); const rec={date:new Date().toLocaleString(), line:lastResult.line, dish:lastResult.dish, kcal:lastResult.kcal, fat:lastResult.fat, na:lastResult.na, mealSlot:document.getElementById('mealSlot').value||'', noteText:document.getElementById('note').value||'', hasPhoto:!!photoData, photo:photoData||''};
   recs.push(rec);
   try{saveRecords(recs);}catch(e){rec.photo='';rec.hasPhoto=false;saveRecords(recs);alert('照片太大，本地存不下，已只记范围不存照片。');}
   renderRecords(); renderTrend(); renderVisit();
 }
-function clearRecords(){localStorage.removeItem('meal_records_gh');photoData='';document.getElementById('preview').style.display='none';renderRecords();renderTrend();renderVisit();}
+function clearRecords(){localStorage.removeItem('meal_records_gh');photoData='';document.getElementById('preview').style.display='none';document.getElementById('previewWrap').style.display='none';renderRecords();renderTrend();renderVisit();}
 function downloadSummary(){
   const el=document.getElementById('visit'); const txt=el.innerText||'暂无记录'; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'})); a.download='meal-summary.txt'; a.click();
 }
@@ -207,6 +237,6 @@ function bowl(){
   const vlo=vol(D,H,lo), vhi=vol(D,H,hi);
   document.getElementById('bowlout').textContent='满容约 '+vlo.toFixed(0)+'–'+vhi.toFixed(0)+' 毫升；盛满 '+fill+' 后约 '+(vlo*fill).toFixed(0)+'–'+(vhi*fill).toFixed(0)+' 毫升（体积，不是营养）。';
 }
-lineChange(); renderRecords(); renderTrend(); renderVisit();
+lineChange(); renderRecords(); renderTrend(); renderVisit(); renderHealth();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 </script></body></html>
